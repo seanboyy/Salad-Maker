@@ -8,12 +8,11 @@ public class VegetableDispenserBehaviour : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+        TextMesh text = GetComponentInChildren<TextMesh>();
+        text.text = vegetableType;
     }
 
     // Update is called once per frame
     void Update()
-    {
-        
-    }
+    { }
 }

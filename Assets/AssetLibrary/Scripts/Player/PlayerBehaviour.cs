@@ -1,10 +1,13 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Text;
+using System.Threading;
 using UnityEngine;
 
 public class PlayerBehaviour : MonoBehaviour
 {
     private CharacterController controller;
+    private TextMesh text;
 
     [Header("Player Attribues")]
     public float speed = 10.0F;
@@ -24,6 +27,7 @@ public class PlayerBehaviour : MonoBehaviour
     void Start()
     {
         controller = GetComponent<CharacterController>();
+        text = GetComponentInChildren<TextMesh>();
     }
 
     // Update is called once per frame
@@ -179,5 +183,10 @@ public class PlayerBehaviour : MonoBehaviour
                 }
                 break;
         }
+        StringBuilder stringBuilder = new StringBuilder();
+        foreach (string vegetable in heldVegetables) {
+            stringBuilder.Append(string.Format("{0}\n", vegetable));
+        }
+        text.text = stringBuilder.ToString();
     }
 }

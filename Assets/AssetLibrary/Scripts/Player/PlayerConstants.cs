@@ -33,7 +33,7 @@ class PlayerConstants
         { PlayerControls.Player2Right, KeyCode.RightArrow },
         { PlayerControls.Player2Up, KeyCode.UpArrow },
         { PlayerControls.Player2Down, KeyCode.DownArrow },
-        { PlayerControls.Player2Interact, KeyCode.RightControl },
+        { PlayerControls.Player2Interact, KeyCode.RightShift },
     };
 
     public enum InteractMode
