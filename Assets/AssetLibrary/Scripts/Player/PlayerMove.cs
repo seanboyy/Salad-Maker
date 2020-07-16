@@ -12,7 +12,7 @@ public class PlayerMove : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        character = this.GetComponent<CharacterController>();
+        character = GetComponent<CharacterController>();
     }
 
     // Update is called once per frame

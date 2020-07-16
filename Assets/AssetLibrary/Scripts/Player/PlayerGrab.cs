@@ -5,12 +5,13 @@ using UnityEngine;
 
 public class PlayerGrab : MonoBehaviour
 {
+    private Transform position;
     public int playerNumber = 0;
-    public bool isHolding = false;
+    public Queue<Vegetable> heldItems = new Queue<Vegetable>(2);
     // Start is called before the first frame update
     void Start()
     {
-        
+        position = GetComponent<Transform>();
     }
 
     //Grabbing should only be done when an object to grab is near, and dropping should only be done when a place to drop an item is near
@@ -21,19 +22,29 @@ public class PlayerGrab : MonoBehaviour
         {
             if (Input.GetKeyDown(KeyCode.LeftShift))
             {
-                isHolding = !isHolding;
-                if (isHolding) Debug.Log("Player One Grabbed Something!");
-                else Debug.Log("Player One Dropped Something!");
+                TryInteract(playerNumber);
             }
         }
         else if (playerNumber == 2)
         {
             if (Input.GetKeyDown(KeyCode.RightControl))
             {
-                isHolding = !isHolding;
-                if (isHolding) Debug.Log("Player Two Grabbed Something!");
-                else Debug.Log("Player Two Dropped Something!");
+                TryInteract(playerNumber);
             }
         }
+    }
+
+    void TryInteract(int playerNumber)
+    {
+        //player is near pick up point
+
+        //player is near trash or drop off
+        Debug.Log(string.Format("Player {0} interacted with the game :D", playerNumber));
+        Debug.Log(string.Format("Player {0} is at position {1}, {2}, {3}", playerNumber, position.position.x, position.position.y, position.position.z));
+    }
+
+    void OnTriggerEnter(Collider other)
+    {
+        Debug.Log(other.gameObject.name);
     }
 }
