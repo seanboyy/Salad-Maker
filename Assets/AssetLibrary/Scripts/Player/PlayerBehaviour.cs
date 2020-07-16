@@ -18,9 +18,15 @@ public class PlayerBehaviour : MonoBehaviour
     public bool isNearTrash = false;
     public bool isNearCustomer = false;
     public bool isNearCuttingBoard = false;
+    public bool isNearPlate = false;
 
-    private GameObject nearObject;
-    
+    [Header("Action Attributes")]
+    public bool isChopping = false;
+
+    public bool didInteractThisFrame = false;
+
+    public GameObject nearObject;
+
     public Queue<string> heldVegetables = new Queue<string>(2);
 
     // Start is called before the first frame update
@@ -33,123 +39,123 @@ public class PlayerBehaviour : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        didInteractThisFrame = false;
         float deltaX = 0F, deltaY = 0F;
-        #region Movement
-        if (playerNumber == 1)
+        if (!isChopping)
         {
-            if (Input.GetKey(PlayerConstants.ControlsDict[PlayerConstants.PlayerControls.Player1Left]))
-            {
-                deltaX = -1 * speed * Time.deltaTime;
-            }
-            else if (Input.GetKey(PlayerConstants.ControlsDict[PlayerConstants.PlayerControls.Player1Right]))
-            {
-                deltaX = 1 * speed * Time.deltaTime;
-            }
-            else if (Input.GetKey(PlayerConstants.ControlsDict[PlayerConstants.PlayerControls.Player1Left]) &&
-                Input.GetKey(PlayerConstants.ControlsDict[PlayerConstants.PlayerControls.Player1Right]))
-            {
-                deltaX = 0;
-            }
-            if (Input.GetKey(PlayerConstants.ControlsDict[PlayerConstants.PlayerControls.Player1Up]))
-            {
-                deltaY = 1 * speed * Time.deltaTime;
-            }
-            else if (Input.GetKey(PlayerConstants.ControlsDict[PlayerConstants.PlayerControls.Player1Down]))
-            {
-                deltaY = -1 * speed * Time.deltaTime;
-            }
-            else if (Input.GetKey(PlayerConstants.ControlsDict[PlayerConstants.PlayerControls.Player1Up]) &&
-                Input.GetKey(PlayerConstants.ControlsDict[PlayerConstants.PlayerControls.Player1Down]))
-            {
-                deltaY = 0;
-            }
-        }
-        else if (playerNumber == 2)
-        {
-            if (Input.GetKey(PlayerConstants.ControlsDict[PlayerConstants.PlayerControls.Player2Left]))
-            {
-                deltaX = -1 * speed * Time.deltaTime;
-            }
-            else if (Input.GetKey(PlayerConstants.ControlsDict[PlayerConstants.PlayerControls.Player2Right]))
-            {
-                deltaX = 1 * speed * Time.deltaTime;
-            }
-            else if (Input.GetKey(PlayerConstants.ControlsDict[PlayerConstants.PlayerControls.Player2Left]) &&
-                Input.GetKey(PlayerConstants.ControlsDict[PlayerConstants.PlayerControls.Player2Right]))
-            {
-                deltaX = 0;
-            }
-            if (Input.GetKey(PlayerConstants.ControlsDict[PlayerConstants.PlayerControls.Player2Up]))
-            {
-                deltaY = 1 * speed * Time.deltaTime;
-            }
-            else if (Input.GetKey(PlayerConstants.ControlsDict[PlayerConstants.PlayerControls.Player2Down]))
-            {
-                deltaY = -1 * speed * Time.deltaTime;
-            }
-            else if (Input.GetKey(PlayerConstants.ControlsDict[PlayerConstants.PlayerControls.Player2Up]) &&
-                Input.GetKey(PlayerConstants.ControlsDict[PlayerConstants.PlayerControls.Player2Down]))
-            {
-                deltaY = 0;
-            }
-
-        }
-        controller.Move(new Vector3(deltaX, deltaY));
-        #endregion
-        #region Interaction
-        if (isNearTrash || isNearCuttingBoard || isNearCustomer)
-        {
+            #region Movement
             if (playerNumber == 1)
             {
-                if (Input.GetKeyDown(PlayerConstants.ControlsDict[PlayerConstants.PlayerControls.Player1Interact]))
+                if (Input.GetKey(PlayerConstants.ControlsDict[PlayerConstants.PlayerControls.Player1Left]))
                 {
-                    TryInteract(PlayerConstants.InteractMode.Drop, nearObject);
+                    deltaX = -1 * speed * Time.deltaTime;
+                }
+                else if (Input.GetKey(PlayerConstants.ControlsDict[PlayerConstants.PlayerControls.Player1Right]))
+                {
+                    deltaX = 1 * speed * Time.deltaTime;
+                }
+                else if (Input.GetKey(PlayerConstants.ControlsDict[PlayerConstants.PlayerControls.Player1Left]) &&
+                    Input.GetKey(PlayerConstants.ControlsDict[PlayerConstants.PlayerControls.Player1Right]))
+                {
+                    deltaX = 0;
+                }
+                if (Input.GetKey(PlayerConstants.ControlsDict[PlayerConstants.PlayerControls.Player1Up]))
+                {
+                    deltaY = 1 * speed * Time.deltaTime;
+                }
+                else if (Input.GetKey(PlayerConstants.ControlsDict[PlayerConstants.PlayerControls.Player1Down]))
+                {
+                    deltaY = -1 * speed * Time.deltaTime;
+                }
+                else if (Input.GetKey(PlayerConstants.ControlsDict[PlayerConstants.PlayerControls.Player1Up]) &&
+                    Input.GetKey(PlayerConstants.ControlsDict[PlayerConstants.PlayerControls.Player1Down]))
+                {
+                    deltaY = 0;
                 }
             }
             else if (playerNumber == 2)
             {
-                if (Input.GetKeyDown(PlayerConstants.ControlsDict[PlayerConstants.PlayerControls.Player2Interact]))
+                if (Input.GetKey(PlayerConstants.ControlsDict[PlayerConstants.PlayerControls.Player2Left]))
                 {
-                    TryInteract(PlayerConstants.InteractMode.Drop, nearObject);
+                    deltaX = -1 * speed * Time.deltaTime;
                 }
-            }
-        }
-        if (isNearDispenser)
-        {
-            if (playerNumber == 1)
-            {
-                if (Input.GetKeyDown(PlayerConstants.ControlsDict[PlayerConstants.PlayerControls.Player1Interact]))
+                else if (Input.GetKey(PlayerConstants.ControlsDict[PlayerConstants.PlayerControls.Player2Right]))
                 {
-                    TryInteract(PlayerConstants.InteractMode.PickUp, nearObject);
+                    deltaX = 1 * speed * Time.deltaTime;
                 }
-            }
-            else if (playerNumber == 2)
-            {
-                if (Input.GetKeyDown(PlayerConstants.ControlsDict[PlayerConstants.PlayerControls.Player2Interact]))
+                else if (Input.GetKey(PlayerConstants.ControlsDict[PlayerConstants.PlayerControls.Player2Left]) &&
+                    Input.GetKey(PlayerConstants.ControlsDict[PlayerConstants.PlayerControls.Player2Right]))
                 {
-                    TryInteract(PlayerConstants.InteractMode.PickUp, nearObject);
+                    deltaX = 0;
                 }
-            }
+                if (Input.GetKey(PlayerConstants.ControlsDict[PlayerConstants.PlayerControls.Player2Up]))
+                {
+                    deltaY = 1 * speed * Time.deltaTime;
+                }
+                else if (Input.GetKey(PlayerConstants.ControlsDict[PlayerConstants.PlayerControls.Player2Down]))
+                {
+                    deltaY = -1 * speed * Time.deltaTime;
+                }
+                else if (Input.GetKey(PlayerConstants.ControlsDict[PlayerConstants.PlayerControls.Player2Up]) &&
+                    Input.GetKey(PlayerConstants.ControlsDict[PlayerConstants.PlayerControls.Player2Down]))
+                {
+                    deltaY = 0;
+                }
 
-        }
-        #endregion
+            }
+            controller.Move(new Vector3(deltaX, deltaY));
+            #endregion
+            #region Interaction
+            if (!didInteractThisFrame && (isNearTrash || (isNearCuttingBoard && heldVegetables.Count > 0) || isNearCustomer || isNearPlate))
+            {
+                if (playerNumber == 1)
+                {
+                    if (Input.GetKeyDown(PlayerConstants.ControlsDict[PlayerConstants.PlayerControls.Player1Interact]))
+                    {
+                        TryInteract(PlayerConstants.InteractMode.Drop, nearObject);
+                    }
+                }
+                else if (playerNumber == 2)
+                {
+                    if (Input.GetKeyDown(PlayerConstants.ControlsDict[PlayerConstants.PlayerControls.Player2Interact]))
+                    {
+                        TryInteract(PlayerConstants.InteractMode.Drop, nearObject);
+                    }
+                }
+            }
+            if (!didInteractThisFrame && (isNearDispenser || (isNearCuttingBoard && heldVegetables.Count == 0) || (isNearPlate && heldVegetables.Count < 2)))
+            {
+                if (playerNumber == 1)
+                {
+                    if (Input.GetKeyDown(PlayerConstants.ControlsDict[PlayerConstants.PlayerControls.Player1Interact]))
+                    {
+                        TryInteract(PlayerConstants.InteractMode.PickUp, nearObject);
+                    }
+                }
+                else if (playerNumber == 2)
+                {
+                    if (Input.GetKeyDown(PlayerConstants.ControlsDict[PlayerConstants.PlayerControls.Player2Interact]))
+                    {
+                        TryInteract(PlayerConstants.InteractMode.PickUp, nearObject);
+                    }
+                }
 
+            }
+            #endregion
+        }
     }
 
     void OnTriggerEnter(Collider other)
     {
         if (other.gameObject != gameObject)
         {
-            if (other.CompareTag(GameConstants.TrashTag))
+            UpdateNear(other.tag, true);
+            if (isNearCuttingBoard && isNearTrash)
             {
-                isNearTrash = true;
-                nearObject = other.gameObject;
+                //Prioritise cutting board over trash can
+                if (other.CompareTag(GameConstants.CuttingBoardTag)) nearObject = other.gameObject;
             }
-            if (other.CompareTag(GameConstants.DispenserTag))
-            {
-                isNearDispenser = true;
-                nearObject = other.gameObject;
-            }
+            else nearObject = other.gameObject;
         }
     }
 
@@ -157,9 +163,30 @@ public class PlayerBehaviour : MonoBehaviour
     {
         if (other.gameObject != gameObject)
         {
-            if (other.CompareTag(GameConstants.TrashTag)) isNearTrash = false;
-            if (other.CompareTag(GameConstants.DispenserTag)) isNearDispenser = false;
-            if (!isNearTrash && !isNearDispenser && !isNearCuttingBoard && !isNearCustomer) nearObject = null;
+            UpdateNear(other.tag, false);
+            if (!isNearTrash && !isNearDispenser && !isNearCuttingBoard && !isNearCustomer && !isNearPlate) nearObject = null;
+        }
+    }
+
+    void UpdateNear(string otherTag, bool flag)
+    {
+        switch (otherTag)
+        {
+            case GameConstants.TrashTag:
+                isNearTrash = flag;
+                break;
+            case GameConstants.DispenserTag:
+                isNearDispenser = flag;
+                break;
+            case GameConstants.CustomerTag:
+                isNearCustomer = flag;
+                break;
+            case GameConstants.CuttingBoardTag:
+                isNearCuttingBoard = flag;
+                break;
+            case GameConstants.PlateTag:
+                isNearPlate = flag;
+                break;
         }
     }
 
@@ -170,23 +197,68 @@ public class PlayerBehaviour : MonoBehaviour
             case PlayerConstants.InteractMode.Drop:
                 if (heldVegetables.Count > 0)
                 {
-                    string vegetable = heldVegetables.Dequeue();
-                    Debug.Log(string.Format("{0} is dropping {1} into {2}", name, vegetable, nearObj.name));
+                    switch (nearObj.tag)
+                    {
+                        case GameConstants.PlateTag:
+                            PlateBehaviour plate = nearObj.GetComponent<PlateBehaviour>();
+                            if (plate.heldVegetable == "")
+                            {
+                                string vegetable = heldVegetables.Dequeue();
+                                plate.heldVegetable = vegetable;
+                                didInteractThisFrame = true;
+                            }
+                            break;
+                        case GameConstants.CustomerTag:
+                            didInteractThisFrame = true;
+                            break;
+                        case GameConstants.CuttingBoardTag:
+                            CuttingBoardBehaviour cuttingBoard = nearObj.GetComponent<CuttingBoardBehaviour>();
+                            isChopping = true;
+                            StartCoroutine("DoChopping");
+                            didInteractThisFrame = true;
+                            break;
+                        case GameConstants.TrashTag:
+                        default:
+                            heldVegetables.Dequeue();
+                            break;
+                    }
                 }
                 break;
             case PlayerConstants.InteractMode.PickUp:
-                VegetableDispenserBehaviour vegetableDispenser = nearObj.GetComponent<VegetableDispenserBehaviour>();
-                if (heldVegetables.Count < 2)
+                switch (nearObj.tag)
                 {
-                    heldVegetables.Enqueue(vegetableDispenser.vegetableType);
-                    Debug.Log(string.Format("{0} is picking up {1}", name, vegetableDispenser.vegetableType));
+                    case GameConstants.DispenserTag:
+                        VegetableDispenserBehaviour vegetableDispenser = nearObj.GetComponent<VegetableDispenserBehaviour>();
+                        if (heldVegetables.Count < 2)
+                        {
+                            heldVegetables.Enqueue(vegetableDispenser.vegetableType);
+                        }
+                        didInteractThisFrame = true;
+                        break;
+                    case GameConstants.PlateTag:
+                        PlateBehaviour plate = nearObj.GetComponent<PlateBehaviour>();
+                        if (plate.heldVegetable != "" && heldVegetables.Count < 2)
+                        {
+                            heldVegetables.Enqueue(plate.heldVegetable);
+                            plate.heldVegetable = "";
+                        }
+                        didInteractThisFrame = true;
+                        break;
                 }
                 break;
         }
         StringBuilder stringBuilder = new StringBuilder();
-        foreach (string vegetable in heldVegetables) {
+        foreach (string vegetable in heldVegetables)
+        {
             stringBuilder.Append(string.Format("{0}\n", vegetable));
         }
         text.text = stringBuilder.ToString();
+    }
+
+    IEnumerator DoChopping()
+    {
+        isChopping = true;
+        yield return new WaitForSecondsRealtime(GameConstants.ChopTime);
+        isChopping = false;
     }
 }

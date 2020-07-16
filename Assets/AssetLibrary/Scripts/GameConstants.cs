@@ -5,7 +5,16 @@ using System.Text;
 using System.Threading.Tasks;
 class GameConstants
 {
-    public static readonly string TrashTag = "TagTrashCan";
-    public static readonly string DispenserTag = "TagVegetableDispenser";
+    #region Tags
+    public const string TrashTag = "TagTrashCan";
+    public const string DispenserTag = "TagVegetableDispenser";
+    public const string CuttingBoardTag = "TagCuttingBoard";
+    public const string CustomerTag = "TagCustomer";
+    public const string PlateTag = "TagPlate";
+    #endregion
+
+    #region Numbers
+    public const float ChopTime = 2.0F;
+    #endregion
 }
 

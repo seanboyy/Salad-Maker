@@ -11,8 +11,4 @@ public class VegetableDispenserBehaviour : MonoBehaviour
         TextMesh text = GetComponentInChildren<TextMesh>();
         text.text = vegetableType;
     }
-
-    // Update is called once per frame
-    void Update()
-    { }
 }
