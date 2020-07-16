@@ -36,5 +36,9 @@ class PlayerConstants
         { PlayerControls.Player2Interact, KeyCode.RightControl },
     };
 
-
+    public enum InteractMode
+    {
+        PickUp,
+        Drop,
+    }
 }

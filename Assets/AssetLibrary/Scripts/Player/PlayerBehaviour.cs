@@ -10,7 +10,15 @@ public class PlayerBehaviour : MonoBehaviour
     public float speed = 10.0F;
     public int playerNumber = 0;
 
-    public Queue<Vegetable> heldItems = new Queue<Vegetable>(2);
+    [Header("Nearness Attributes")]
+    public bool isNearDispenser = false;
+    public bool isNearTrash = false;
+    public bool isNearCustomer = false;
+    public bool isNearCuttingBoard = false;
+
+    private GameObject nearObject;
+    
+    public Queue<string> heldVegetables = new Queue<string>(2);
 
     // Start is called before the first frame update
     void Start()
@@ -84,13 +92,92 @@ public class PlayerBehaviour : MonoBehaviour
         }
         controller.Move(new Vector3(deltaX, deltaY));
         #endregion
+        #region Interaction
+        if (isNearTrash || isNearCuttingBoard || isNearCustomer)
+        {
+            if (playerNumber == 1)
+            {
+                if (Input.GetKeyDown(PlayerConstants.ControlsDict[PlayerConstants.PlayerControls.Player1Interact]))
+                {
+                    TryInteract(PlayerConstants.InteractMode.Drop, nearObject);
+                }
+            }
+            else if (playerNumber == 2)
+            {
+                if (Input.GetKeyDown(PlayerConstants.ControlsDict[PlayerConstants.PlayerControls.Player2Interact]))
+                {
+                    TryInteract(PlayerConstants.InteractMode.Drop, nearObject);
+                }
+            }
+        }
+        if (isNearDispenser)
+        {
+            if (playerNumber == 1)
+            {
+                if (Input.GetKeyDown(PlayerConstants.ControlsDict[PlayerConstants.PlayerControls.Player1Interact]))
+                {
+                    TryInteract(PlayerConstants.InteractMode.PickUp, nearObject);
+                }
+            }
+            else if (playerNumber == 2)
+            {
+                if (Input.GetKeyDown(PlayerConstants.ControlsDict[PlayerConstants.PlayerControls.Player2Interact]))
+                {
+                    TryInteract(PlayerConstants.InteractMode.PickUp, nearObject);
+                }
+            }
+
+        }
+        #endregion
+
     }
 
-    void OnTriggerStay(Collider other)
+    void OnTriggerEnter(Collider other)
     {
-        if (other.tag.Equals(GameConstants.TrashTag))
+        if (other.gameObject != gameObject)
         {
-            Debug.Log(string.Format("{0} is near a trash can", name));
+            if (other.CompareTag(GameConstants.TrashTag))
+            {
+                isNearTrash = true;
+                nearObject = other.gameObject;
+            }
+            if (other.CompareTag(GameConstants.DispenserTag))
+            {
+                isNearDispenser = true;
+                nearObject = other.gameObject;
+            }
+        }
+    }
+
+    void OnTriggerExit(Collider other)
+    {
+        if (other.gameObject != gameObject)
+        {
+            if (other.CompareTag(GameConstants.TrashTag)) isNearTrash = false;
+            if (other.CompareTag(GameConstants.DispenserTag)) isNearDispenser = false;
+            if (!isNearTrash && !isNearDispenser && !isNearCuttingBoard && !isNearCustomer) nearObject = null;
+        }
+    }
+
+    void TryInteract(PlayerConstants.InteractMode mode, GameObject nearObj)
+    {
+        switch (mode)
+        {
+            case PlayerConstants.InteractMode.Drop:
+                if (heldVegetables.Count > 0)
+                {
+                    string vegetable = heldVegetables.Dequeue();
+                    Debug.Log(string.Format("{0} is dropping {1} into {2}", name, vegetable, nearObj.name));
+                }
+                break;
+            case PlayerConstants.InteractMode.PickUp:
+                VegetableDispenserBehaviour vegetableDispenser = nearObj.GetComponent<VegetableDispenserBehaviour>();
+                if (heldVegetables.Count < 2)
+                {
+                    heldVegetables.Enqueue(vegetableDispenser.vegetableType);
+                    Debug.Log(string.Format("{0} is picking up {1}", name, vegetableDispenser.vegetableType));
+                }
+                break;
         }
     }
 }

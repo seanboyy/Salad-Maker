@@ -6,5 +6,6 @@ using System.Threading.Tasks;
 class GameConstants
 {
     public static readonly string TrashTag = "TagTrashCan";
+    public static readonly string DispenserTag = "TagVegetableDispenser";
 }
 
