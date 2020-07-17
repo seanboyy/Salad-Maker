@@ -4,11 +4,11 @@ using UnityEngine;
 
 public class VegetableDispenserBehaviour : MonoBehaviour
 {
-    public string vegetableType;
+    public Vegetable vegetableType;
     // Start is called before the first frame update
     void Start()
     {
         TextMesh text = GetComponentInChildren<TextMesh>();
-        text.text = vegetableType;
+        text.text = vegetableType.name;
     }
 }

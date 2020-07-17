@@ -16,5 +16,9 @@ class GameConstants
     #region Numbers
     public const float ChopTime = 2.0F;
     #endregion
+
+    #region Strings
+    public static List<string> Vegetables = new List<string>{ "Lettuce", "Tomato", "Cucumber", "Pepper", "Olive", "" };
+    #endregion
 }
 

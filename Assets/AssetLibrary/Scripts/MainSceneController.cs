@@ -12,6 +12,7 @@ public class MainSceneController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+
         float extent = Camera.main.orthographicSize;
         aspect = Camera.main.aspect;
         float halfHeight = extent;
@@ -43,7 +44,6 @@ public class MainSceneController : MonoBehaviour
             BottomWall.transform.position = new Vector3(0, minY - 0.5F, 0);
             LeftWall.transform.position = new Vector3(minX - 0.5F, 0, 0);
             RightWall.transform.position = new Vector3(maxX + 0.5F, 0, 0);
-
         }
     }
 }

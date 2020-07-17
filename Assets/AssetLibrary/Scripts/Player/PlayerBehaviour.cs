@@ -27,7 +27,7 @@ public class PlayerBehaviour : MonoBehaviour
 
     public GameObject nearObject;
 
-    public Queue<string> heldVegetables = new Queue<string>(2);
+    public Queue<Vegetable> heldVegetables = new Queue<Vegetable>(2);
 
     // Start is called before the first frame update
     void Start()
@@ -201,9 +201,9 @@ public class PlayerBehaviour : MonoBehaviour
                     {
                         case GameConstants.PlateTag:
                             PlateBehaviour plate = nearObj.GetComponent<PlateBehaviour>();
-                            if (plate.heldVegetable == "")
+                            if (plate.heldVegetable.name == "")
                             {
-                                string vegetable = heldVegetables.Dequeue();
+                                var vegetable = heldVegetables.Dequeue();
                                 plate.heldVegetable = vegetable;
                                 didInteractThisFrame = true;
                             }
@@ -213,9 +213,16 @@ public class PlayerBehaviour : MonoBehaviour
                             break;
                         case GameConstants.CuttingBoardTag:
                             CuttingBoardBehaviour cuttingBoard = nearObj.GetComponent<CuttingBoardBehaviour>();
-                            isChopping = true;
-                            StartCoroutine("DoChopping");
-                            didInteractThisFrame = true;
+                            if (cuttingBoard.heldItem.name == "")
+                            {
+                                var vegetable = heldVegetables.Dequeue();
+                                cuttingBoard.heldItem = vegetable;
+                                ProgressBarBehaviour progressBar = nearObj.GetComponentInChildren<ProgressBarBehaviour>();
+                                progressBar.StartProgressBar(GameConstants.ChopTime);
+                                isChopping = true;
+                                StartCoroutine("DoChopping", cuttingBoard);
+                                didInteractThisFrame = true;
+                            }
                             break;
                         case GameConstants.TrashTag:
                         default:
@@ -237,28 +244,36 @@ public class PlayerBehaviour : MonoBehaviour
                         break;
                     case GameConstants.PlateTag:
                         PlateBehaviour plate = nearObj.GetComponent<PlateBehaviour>();
-                        if (plate.heldVegetable != "" && heldVegetables.Count < 2)
+                        if (plate.heldVegetable.name != "" && heldVegetables.Count < 2)
                         {
                             heldVegetables.Enqueue(plate.heldVegetable);
-                            plate.heldVegetable = "";
+                            plate.heldVegetable = new Vegetable();
                         }
                         didInteractThisFrame = true;
+                        break;
+                    case GameConstants.CuttingBoardTag:
+                        CuttingBoardBehaviour cuttingBoard = nearObj.GetComponent<CuttingBoardBehaviour>();
+                        if (cuttingBoard.heldItem.name != "" && heldVegetables.Count == 0)
+                        {
+                            heldVegetables.Enqueue(cuttingBoard.heldItem);
+                            cuttingBoard.heldItem = new Vegetable();
+                        }
                         break;
                 }
                 break;
         }
         StringBuilder stringBuilder = new StringBuilder();
-        foreach (string vegetable in heldVegetables)
+        foreach (var vegetable in heldVegetables)
         {
-            stringBuilder.Append(string.Format("{0}\n", vegetable));
+            stringBuilder.Append(string.Format("{0}\n", vegetable.name));
         }
         text.text = stringBuilder.ToString();
     }
 
-    IEnumerator DoChopping()
+    IEnumerator DoChopping(CuttingBoardBehaviour cuttingBoard)
     {
-        isChopping = true;
         yield return new WaitForSecondsRealtime(GameConstants.ChopTime);
+        cuttingBoard.heldItem.DoChop();
         isChopping = false;
     }
 }

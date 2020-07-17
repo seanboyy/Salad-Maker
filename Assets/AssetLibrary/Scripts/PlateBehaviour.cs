@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class PlateBehaviour : MonoBehaviour
 {
-    public string heldVegetable = "";
+    public Vegetable heldVegetable = new Vegetable();
     private TextMesh text;
 
     // Start is called before the first frame update
@@ -16,6 +16,6 @@ public class PlateBehaviour : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        text.text = heldVegetable;
+        text.text = heldVegetable.name;
     }
 }
