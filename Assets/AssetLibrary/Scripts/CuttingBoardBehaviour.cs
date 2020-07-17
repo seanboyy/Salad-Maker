@@ -1,4 +1,5 @@
-﻿using System.Text;
+﻿using System;
+using System.Text;
 using UnityEngine;
 
 public class CuttingBoardBehaviour : MonoBehaviour
@@ -7,6 +8,7 @@ public class CuttingBoardBehaviour : MonoBehaviour
     public Vegetable ingredient;
     public Salad activeSalad = null;
     private ProgressBarBehaviour progressBar;
+    public bool working = false;
     // Start is called before the first frame update
     void Start()
     {

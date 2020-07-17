@@ -225,47 +225,51 @@ public class PlayerBehaviour : MonoBehaviour
                             break;
                         case GameConstants.CuttingBoardTag:
                             CuttingBoardBehaviour cuttingBoard = nearObj.GetComponent<CuttingBoardBehaviour>();
-                            var activeObject = heldObjects.Dequeue();
-                            if (activeObject is Salad salad)
+                            if (!cuttingBoard.working)
                             {
-                                if (cuttingBoard.activeSalad == null)
+                                var activeObject = heldObjects.Dequeue();
+                                if (activeObject is Salad salad)
                                 {
-                                    cuttingBoard.activeSalad = new Salad(salad);
-                                    didInteractThisFrame = true;
-                                }
-                                //there is already a salad there, so we shouldn't place one. Restore queue to previous state
-                                else
-                                {
-                                    ScoreObject tempObject = null;
-                                    if (heldObjects.Count > 0)
+                                    if (cuttingBoard.activeSalad == null)
                                     {
-                                        tempObject = heldObjects.Dequeue();
+                                        cuttingBoard.activeSalad = new Salad(salad);
+                                        didInteractThisFrame = true;
                                     }
-                                    heldObjects.Enqueue(activeObject);
-                                    if (tempObject != null) heldObjects.Enqueue(tempObject);
-                                }
-                            }
-                            else if (activeObject is Vegetable vegetable)
-                            {
-                                if (cuttingBoard.ingredient.name == "")
-                                {
-                                    cuttingBoard.ingredient = new Vegetable(vegetable);
-                                    ProgressBarBehaviour progressBar = nearObj.GetComponentInChildren<ProgressBarBehaviour>();
-                                    progressBar.StartProgressBar(GameConstants.ChopTime);
-                                    isChopping = true;
-                                    StartCoroutine("DoChopping", cuttingBoard);
-                                    didInteractThisFrame = true;
-                                }
-                                //this shouldn't happen, but just in case restore queue to previous state
-                                else
-                                {
-                                    ScoreObject tempObject = null;
-                                    if (heldObjects.Count > 0)
+                                    //there is already a salad there, so we shouldn't place one. Restore queue to previous state
+                                    else
                                     {
-                                        tempObject = heldObjects.Dequeue();
+                                        ScoreObject tempObject = null;
+                                        if (heldObjects.Count > 0)
+                                        {
+                                            tempObject = heldObjects.Dequeue();
+                                        }
+                                        heldObjects.Enqueue(activeObject);
+                                        if (tempObject != null) heldObjects.Enqueue(tempObject);
                                     }
-                                    heldObjects.Enqueue(activeObject);
-                                    if (tempObject != null) heldObjects.Enqueue(tempObject);
+                                }
+                                else if (activeObject is Vegetable vegetable)
+                                {
+                                    if (cuttingBoard.ingredient.name == "")
+                                    {
+                                        cuttingBoard.ingredient = new Vegetable(vegetable);
+                                        ProgressBarBehaviour progressBar = nearObj.GetComponentInChildren<ProgressBarBehaviour>();
+                                        progressBar.StartProgressBar(GameConstants.ChopTime);
+                                        isChopping = true;
+                                        cuttingBoard.working = true;
+                                        StartCoroutine("DoChopping", cuttingBoard);
+                                        didInteractThisFrame = true;
+                                    }
+                                    //this shouldn't happen, but just in case restore queue to previous state
+                                    else
+                                    {
+                                        ScoreObject tempObject = null;
+                                        if (heldObjects.Count > 0)
+                                        {
+                                            tempObject = heldObjects.Dequeue();
+                                        }
+                                        heldObjects.Enqueue(activeObject);
+                                        if (tempObject != null) heldObjects.Enqueue(tempObject);
+                                    }
                                 }
                             }
                             break;
@@ -303,11 +307,14 @@ public class PlayerBehaviour : MonoBehaviour
                         break;
                     case GameConstants.CuttingBoardTag:
                         CuttingBoardBehaviour cuttingBoard = nearObj.GetComponent<CuttingBoardBehaviour>();
-                        if (cuttingBoard.activeSalad != null)
+                        if (!cuttingBoard.working)
                         {
-                            heldObjects.Enqueue(cuttingBoard.activeSalad);
-                            cuttingBoard.activeSalad = null;
-                            didInteractThisFrame = true;
+                            if (cuttingBoard.activeSalad != null)
+                            {
+                                heldObjects.Enqueue(cuttingBoard.activeSalad);
+                                cuttingBoard.activeSalad = null;
+                                didInteractThisFrame = true;
+                            }
                         }
                         break;
                 }
@@ -326,5 +333,6 @@ public class PlayerBehaviour : MonoBehaviour
         yield return new WaitForSecondsRealtime(GameConstants.ChopTime);
         cuttingBoard.CreateSaladFromIngredient();
         isChopping = false;
+        cuttingBoard.working = false;
     }
 }
