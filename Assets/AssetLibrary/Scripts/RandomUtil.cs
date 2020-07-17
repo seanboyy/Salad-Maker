@@ -20,6 +20,8 @@ class RandomUtil
         return veggieCombo;
     }
 
+    //Adapted from
+    //https://www.csharp-console-examples.com/loop/c-shuffle-list/
     private static void Shuffle<T>(IList<T> list)
     {
         Random rng = new Random();

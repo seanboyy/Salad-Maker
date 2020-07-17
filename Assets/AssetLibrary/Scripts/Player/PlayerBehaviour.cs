@@ -150,12 +150,15 @@ public class PlayerBehaviour : MonoBehaviour
         if (other.gameObject != gameObject)
         {
             UpdateNear(other.tag, true);
-            if (isNearCuttingBoard && isNearTrash)
+            if (!other.CompareTag("Player"))
             {
-                //Prioritise cutting board over trash can
-                if (other.CompareTag(GameConstants.CuttingBoardTag)) nearObject = other.gameObject;
+                if (isNearCuttingBoard && isNearTrash)
+                {
+                    //Prioritise cutting board over trash can
+                    if (other.CompareTag(GameConstants.CuttingBoardTag)) nearObject = other.gameObject;
+                }
+                else nearObject = other.gameObject;
             }
-            else nearObject = other.gameObject;
         }
     }
 
@@ -204,7 +207,7 @@ public class PlayerBehaviour : MonoBehaviour
                             if (plate.heldVegetable.name == "")
                             {
                                 var vegetable = heldVegetables.Dequeue();
-                                plate.heldVegetable = vegetable;
+                                plate.heldVegetable = new Vegetable(vegetable);
                                 didInteractThisFrame = true;
                             }
                             break;
@@ -213,10 +216,10 @@ public class PlayerBehaviour : MonoBehaviour
                             break;
                         case GameConstants.CuttingBoardTag:
                             CuttingBoardBehaviour cuttingBoard = nearObj.GetComponent<CuttingBoardBehaviour>();
-                            if (cuttingBoard.heldItem.name == "")
+                            if (cuttingBoard.ingredient.name == "")
                             {
                                 var vegetable = heldVegetables.Dequeue();
-                                cuttingBoard.heldItem = vegetable;
+                                cuttingBoard.ingredient = new Vegetable(vegetable);
                                 ProgressBarBehaviour progressBar = nearObj.GetComponentInChildren<ProgressBarBehaviour>();
                                 progressBar.StartProgressBar(GameConstants.ChopTime);
                                 isChopping = true;
@@ -238,7 +241,7 @@ public class PlayerBehaviour : MonoBehaviour
                         VegetableDispenserBehaviour vegetableDispenser = nearObj.GetComponent<VegetableDispenserBehaviour>();
                         if (heldVegetables.Count < 2)
                         {
-                            heldVegetables.Enqueue(vegetableDispenser.vegetableType);
+                            heldVegetables.Enqueue(new Vegetable(vegetableDispenser.vegetableType));
                         }
                         didInteractThisFrame = true;
                         break;
@@ -246,17 +249,17 @@ public class PlayerBehaviour : MonoBehaviour
                         PlateBehaviour plate = nearObj.GetComponent<PlateBehaviour>();
                         if (plate.heldVegetable.name != "" && heldVegetables.Count < 2)
                         {
-                            heldVegetables.Enqueue(plate.heldVegetable);
+                            heldVegetables.Enqueue(new Vegetable(plate.heldVegetable));
                             plate.heldVegetable = new Vegetable();
                         }
                         didInteractThisFrame = true;
                         break;
                     case GameConstants.CuttingBoardTag:
                         CuttingBoardBehaviour cuttingBoard = nearObj.GetComponent<CuttingBoardBehaviour>();
-                        if (cuttingBoard.heldItem.name != "" && heldVegetables.Count == 0)
+                        if (cuttingBoard.ingredient.name != "" && heldVegetables.Count == 0)
                         {
-                            heldVegetables.Enqueue(cuttingBoard.heldItem);
-                            cuttingBoard.heldItem = new Vegetable();
+                            heldVegetables.Enqueue(new Vegetable(cuttingBoard.ingredient));
+                            cuttingBoard.ingredient = new Vegetable();
                         }
                         break;
                 }
@@ -273,7 +276,7 @@ public class PlayerBehaviour : MonoBehaviour
     IEnumerator DoChopping(CuttingBoardBehaviour cuttingBoard)
     {
         yield return new WaitForSecondsRealtime(GameConstants.ChopTime);
-        cuttingBoard.heldItem.DoChop();
+        cuttingBoard.ingredient.DoChop();
         isChopping = false;
     }
 }

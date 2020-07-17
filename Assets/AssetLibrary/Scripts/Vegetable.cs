@@ -17,6 +17,12 @@ public class Vegetable
         isChopped = false;
     }
 
+    public Vegetable(Vegetable other)
+    {
+        name = other.name;
+        isChopped = other.isChopped;
+    }
+
     public void DoChop()
     {
         if (!isChopped)

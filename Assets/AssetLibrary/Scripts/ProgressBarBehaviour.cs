@@ -1,7 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using System.Runtime.CompilerServices;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class ProgressBarBehaviour : MonoBehaviour
 {
@@ -52,7 +49,6 @@ public class ProgressBarBehaviour : MonoBehaviour
             percentComplete += percentPerFrame;
             progressBarForeground.transform.position = new Vector3(progressBarForeground.transform.position.x + positionMoveScalar, progressBarForeground.transform.position.y, progressBarForeground.transform.position.z);
             progressBarForeground.transform.localScale = new Vector3(progressBarForeground.transform.localScale.x + scaleGrowScalar, progressBarForeground.transform.localScale.y, progressBarForeground.transform.localScale.z);
-            Debug.Log(string.Format("{0}% done", percentComplete * 100));
         }
     }
 }

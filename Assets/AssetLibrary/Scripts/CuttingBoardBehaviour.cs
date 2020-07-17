@@ -1,11 +1,10 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class CuttingBoardBehaviour : MonoBehaviour
 {
     private TextMesh text;
-    public Vegetable heldItem;
+    public Vegetable ingredient;
+    public Salad activeSalad;
     private ProgressBarBehaviour progressBar;
     // Start is called before the first frame update
     void Start()
@@ -17,8 +16,8 @@ public class CuttingBoardBehaviour : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        text.text = heldItem.name;
-        if (heldItem.name == "" && progressBar.hasStarted)
+        text.text = ingredient.name;
+        if (ingredient.name == "" && progressBar.hasStarted)
         {
             progressBar.ResetProgressBar();
         }
