@@ -46,7 +46,12 @@ public class PlayerBehaviour : MonoBehaviour
             #region Movement
             if (playerNumber == 1)
             {
-                if (Input.GetKey(PlayerConstants.ControlsDict[PlayerConstants.PlayerControls.Player1Left]))
+                if (Input.GetKey(PlayerConstants.ControlsDict[PlayerConstants.PlayerControls.Player1Left]) &&
+                    Input.GetKey(PlayerConstants.ControlsDict[PlayerConstants.PlayerControls.Player1Right]))
+                {
+                    deltaX = 0;
+                }
+                else if (Input.GetKey(PlayerConstants.ControlsDict[PlayerConstants.PlayerControls.Player1Left]))
                 {
                     deltaX = -1 * speed * Time.deltaTime;
                 }
@@ -54,12 +59,12 @@ public class PlayerBehaviour : MonoBehaviour
                 {
                     deltaX = 1 * speed * Time.deltaTime;
                 }
-                else if (Input.GetKey(PlayerConstants.ControlsDict[PlayerConstants.PlayerControls.Player1Left]) &&
-                    Input.GetKey(PlayerConstants.ControlsDict[PlayerConstants.PlayerControls.Player1Right]))
+                if (Input.GetKey(PlayerConstants.ControlsDict[PlayerConstants.PlayerControls.Player1Up]) &&
+                    Input.GetKey(PlayerConstants.ControlsDict[PlayerConstants.PlayerControls.Player1Down]))
                 {
-                    deltaX = 0;
+                    deltaY = 0;
                 }
-                if (Input.GetKey(PlayerConstants.ControlsDict[PlayerConstants.PlayerControls.Player1Up]))
+                else if (Input.GetKey(PlayerConstants.ControlsDict[PlayerConstants.PlayerControls.Player1Up]))
                 {
                     deltaY = 1 * speed * Time.deltaTime;
                 }
@@ -67,15 +72,15 @@ public class PlayerBehaviour : MonoBehaviour
                 {
                     deltaY = -1 * speed * Time.deltaTime;
                 }
-                else if (Input.GetKey(PlayerConstants.ControlsDict[PlayerConstants.PlayerControls.Player1Up]) &&
-                    Input.GetKey(PlayerConstants.ControlsDict[PlayerConstants.PlayerControls.Player1Down]))
-                {
-                    deltaY = 0;
-                }
             }
             else if (playerNumber == 2)
             {
-                if (Input.GetKey(PlayerConstants.ControlsDict[PlayerConstants.PlayerControls.Player2Left]))
+                if (Input.GetKey(PlayerConstants.ControlsDict[PlayerConstants.PlayerControls.Player2Left]) &&
+                    Input.GetKey(PlayerConstants.ControlsDict[PlayerConstants.PlayerControls.Player2Right]))
+                {
+                    deltaX = 0;
+                }
+                else if (Input.GetKey(PlayerConstants.ControlsDict[PlayerConstants.PlayerControls.Player2Left]))
                 {
                     deltaX = -1 * speed * Time.deltaTime;
                 }
@@ -83,23 +88,18 @@ public class PlayerBehaviour : MonoBehaviour
                 {
                     deltaX = 1 * speed * Time.deltaTime;
                 }
-                else if (Input.GetKey(PlayerConstants.ControlsDict[PlayerConstants.PlayerControls.Player2Left]) &&
-                    Input.GetKey(PlayerConstants.ControlsDict[PlayerConstants.PlayerControls.Player2Right]))
+                if (Input.GetKey(PlayerConstants.ControlsDict[PlayerConstants.PlayerControls.Player2Up]) &&
+                    Input.GetKey(PlayerConstants.ControlsDict[PlayerConstants.PlayerControls.Player2Down]))
                 {
-                    deltaX = 0;
+                    deltaY = 0;
                 }
-                if (Input.GetKey(PlayerConstants.ControlsDict[PlayerConstants.PlayerControls.Player2Up]))
+                else if (Input.GetKey(PlayerConstants.ControlsDict[PlayerConstants.PlayerControls.Player2Up]))
                 {
                     deltaY = 1 * speed * Time.deltaTime;
                 }
                 else if (Input.GetKey(PlayerConstants.ControlsDict[PlayerConstants.PlayerControls.Player2Down]))
                 {
                     deltaY = -1 * speed * Time.deltaTime;
-                }
-                else if (Input.GetKey(PlayerConstants.ControlsDict[PlayerConstants.PlayerControls.Player2Up]) &&
-                    Input.GetKey(PlayerConstants.ControlsDict[PlayerConstants.PlayerControls.Player2Down]))
-                {
-                    deltaY = 0;
                 }
 
             }

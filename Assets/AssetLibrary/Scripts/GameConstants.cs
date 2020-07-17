@@ -15,10 +15,12 @@ class GameConstants
 
     #region Numbers
     public const float ChopTime = 2.0F;
+    public const float WaitTime = 15.0F;
+    public const float RecipeComplexityScale = 1.5F;
     #endregion
 
     #region Strings
-    public static List<string> Vegetables = new List<string>{ "Lettuce", "Tomato", "Cucumber", "Pepper", "Olive", "" };
+    public static List<string> Vegetables = new List<string>{ "Lettuce", "Tomato", "Cucumber", "Pepper", "Onion", "Carrot" };
     #endregion
 }
 
