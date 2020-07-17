@@ -1,19 +1,17 @@
 ﻿using System;
+using System.Transactions;
 using UnityEngine;
 
 [Serializable]
-public class Vegetable
+public class Vegetable : ScoreObject
 {
-    [SerializeField]
-    public string name;
 
     [SerializeField]
     public bool isChopped;
 
 
-    public Vegetable(string name = "")
+    public Vegetable(string name = "") : base(name)
     {
-        this.name = name;
         isChopped = false;
     }
 
