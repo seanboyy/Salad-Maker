@@ -17,6 +17,11 @@ public class MainSceneController : MonoBehaviour
     public GameObject LeftWall;
     public GameObject RightWall;
     public GameObject BottomWall;
+    [Header("Counters")]
+    public GameObject TopCounter;
+    public GameObject BottomCounter;
+    public GameObject LeftCounter;
+    public GameObject RightCounter;
 
     private float aspect = 0.0F;
 
@@ -35,6 +40,11 @@ public class MainSceneController : MonoBehaviour
         BottomWall.transform.position = new Vector3(0, minY - 0.5F, 0);
         LeftWall.transform.position = new Vector3(minX - 0.5F, 0, 0);
         RightWall.transform.position = new Vector3(maxX + 0.5F, 0, 0);
+        TopCounter.transform.position = new Vector3(0, maxY - 1.5F, -1.25F);
+        BottomCounter.transform.position = new Vector3(0, minY + 0.5F, -1.5F);
+        RightCounter.transform.position = new Vector3(maxX - 0.5F, 0, -1.5F);
+        LeftCounter.transform.position = new Vector3(minX + 0.5F, 0, -1.5F);
+
         minY += 1;
         dispenserPositions.Add(new Vector3(minX + 0.5F, 0, -2));
         dispenserPositions.Add(new Vector3(maxX - 0.5F, 0, -2));
