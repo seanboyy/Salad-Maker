@@ -19,6 +19,7 @@ public class CustomerBehaviour : MonoBehaviour
     public PlayerBehaviour submittingPlayer = null;
 
     public bool isActive = false;
+    public bool canAcceptFood = false;
     public bool player1Mad = false;
     public bool player2Mad = false;
 
@@ -49,6 +50,7 @@ public class CustomerBehaviour : MonoBehaviour
 
     public void StartCustomer()
     {
+        canAcceptFood = true;
         renderedCustomer.SetActive(true);
         Debug.Log("Starting Customer");
         order = new Salad();
@@ -63,6 +65,7 @@ public class CustomerBehaviour : MonoBehaviour
 
     public void DoLeave(bool satisfied)
     {
+        canAcceptFood = false;
         renderedCustomer.SetActive(false);
         Debug.Log(string.Format("Customer is {0}satisfied and is now leaving", satisfied ? "" : "not "));
         if (attachedBar.percentComplete <= 0.3F)

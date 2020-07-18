@@ -223,7 +223,7 @@ public class PlayerBehaviour : MonoBehaviour
                             break;
                         case GameConstants.CustomerTag:
                             CustomerBehaviour customer = nearObj.GetComponent<CustomerBehaviour>();
-                            if (customer.isActive)
+                            if (customer.canAcceptFood)
                             {
                                 var activeObject = heldObjects.Dequeue();
                                 if (activeObject is Salad salad)
