@@ -8,7 +8,8 @@ public class ProgressBarBehaviour : MonoBehaviour
 
     public float time = 0F;
 
-    private float percentComplete;
+    [NonSerialized]
+    public float percentComplete;
     private float percentPerFrame;
     private float positionMoveScalar = 0F;
     private float scaleGrowScalar = 0F;

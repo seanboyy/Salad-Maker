@@ -66,6 +66,10 @@ public class CustomerBehaviour : MonoBehaviour
     public void DoLeave(bool satisfied)
     {
         Debug.Log(string.Format("Customer is {0}satisfied and is now leaving", satisfied ? "" : "not "));
+        if (attachedBar.percentComplete <= 0.3F)
+        {
+            //Do spawn powerup
+        }
         order = null;
         isActive = false;
         player1Mad = false;
