@@ -44,4 +44,14 @@ public class Salad : ScoreObject
         string newName = stringBuilder.ToString();
         name = newName.Substring(0, newName.Length - 2);
     }
+
+    public int GetIngredientCount()
+    {
+        return ingredients.Count;
+    }
+
+    public override string ToString()
+    {
+        return name;
+    }
 }

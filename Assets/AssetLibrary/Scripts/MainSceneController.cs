@@ -1,6 +1,13 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
 public class MainSceneController : MonoBehaviour
 {
+    [SerializeField]
+    public List<CustomerBehaviour> customers = new List<CustomerBehaviour>();
+
+    [Header("Prefabs")]
+    public GameObject DispensingStation;
     [Header("Walls")]
     public GameObject TopWall;
     public GameObject LeftWall;
@@ -30,6 +37,10 @@ public class MainSceneController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        customers.ForEach(customer =>
+        {
+            if (!customer.isActive) StartCoroutine("WaitToStartCustomer", customer);
+        });
         if (Camera.main.aspect != aspect)
         {
             float extent = Camera.main.orthographicSize;
@@ -45,5 +56,12 @@ public class MainSceneController : MonoBehaviour
             LeftWall.transform.position = new Vector3(minX - 0.5F, 0, 0);
             RightWall.transform.position = new Vector3(maxX + 0.5F, 0, 0);
         }
+    }
+
+    IEnumerator WaitToStartCustomer(CustomerBehaviour customer)
+    {
+        customer.isActive = true;
+        yield return new WaitForSecondsRealtime(RandomUtil.GetRandomWaitTime());
+        customer.StartCustomer();
     }
 }

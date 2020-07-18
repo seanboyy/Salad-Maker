@@ -194,6 +194,10 @@ MonoBehaviour:
   isNearTrash: 0
   isNearCustomer: 0
   isNearCuttingBoard: 0
+  isNearPlate: 0
+  isChopping: 0
+  didInteractThisFrame: 0
+  nearObject: {fileID: 0}
 --- !u!143 &8481969929088497914
 CharacterController:
   m_ObjectHideFlags: 0
@@ -223,7 +227,7 @@ BoxCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 2, y: 0.001, z: 1}
+  m_Size: {x: 2, y: 0.001, z: 0.001}
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!65 &1740440671385720772
 BoxCollider:
@@ -236,7 +240,7 @@ BoxCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 0.001, y: 2, z: 1}
+  m_Size: {x: 0.001, y: 2, z: 0.001}
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!135 &2068932590028496697
 SphereCollider:

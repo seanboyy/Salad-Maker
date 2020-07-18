@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 class GameConstants
 {
     #region Tags
@@ -15,12 +11,20 @@ class GameConstants
 
     #region Numbers
     public const float ChopTime = 2.0F;
-    public const float WaitTime = 15.0F;
+    public const float WaitTime = 13.0F;
     public const float RecipeComplexityScale = 1.5F;
+    public const float CustomerAppearWaitTime = 3.0F;
     #endregion
 
     #region Strings
-    public static List<string> Vegetables = new List<string>{ "Lettuce", "Tomato", "Cucumber", "Pepper", "Onion", "Carrot" };
+    public static List<Vegetable> Vegetables = new List<Vegetable>{
+        new Vegetable("Lettuce"),
+        new Vegetable("Tomato"),
+        new Vegetable("Cucumber"),
+        new Vegetable("Pepper"),
+        new Vegetable("Onion"),
+        new Vegetable("Carrot")
+    };
     #endregion
 }
 

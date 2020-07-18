@@ -1,17 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections.Generic;
+using UnityEngine;
 
 class RandomUtil
 {
-    static Random random = new Random();
+    static System.Random random = new System.Random();
 
-    public static List<string> CreateRandomCombination()
+    public static List<Vegetable> CreateRandomCombination()
     {
         var randomIngredientCount = random.Next(1, 4);
-        var veggieCombo = new List<string>();
-        var veggieCopy = new List<string>(GameConstants.Vegetables);
-        var rand = new Random();
+        var veggieCombo = new List<Vegetable>();
+        var veggieCopy = new List<Vegetable>(GameConstants.Vegetables);
         Shuffle(veggieCopy);
         for (int i = 0; i < randomIngredientCount; ++i)
         {
@@ -20,11 +18,19 @@ class RandomUtil
         return veggieCombo;
     }
 
+    public static float GetRandomWaitTime()
+    {
+        float scale = (float)random.NextDouble();
+        float waitTime = GameConstants.CustomerAppearWaitTime * scale;
+        waitTime = Mathf.Clamp(waitTime, 0.5F, GameConstants.CustomerAppearWaitTime);
+        return waitTime;
+    }
+
     //Adapted from
     //https://www.csharp-console-examples.com/loop/c-shuffle-list/
     private static void Shuffle<T>(IList<T> list)
     {
-        Random rng = new Random();
+        System.Random rng = new System.Random();
         int n = list.Count;
         while (n > 1)
         {
