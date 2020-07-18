@@ -1,10 +1,14 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 public class MainSceneController : MonoBehaviour
 {
     [SerializeField]
     public List<CustomerBehaviour> customers = new List<CustomerBehaviour>();
+
+    [SerializeField]
+    public List<Vector3> dispenserPositions = new List<Vector3>();
 
     [Header("Prefabs")]
     public GameObject DispensingStation;
@@ -19,7 +23,6 @@ public class MainSceneController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-
         float extent = Camera.main.orthographicSize;
         aspect = Camera.main.aspect;
         float halfHeight = extent;
@@ -32,9 +35,24 @@ public class MainSceneController : MonoBehaviour
         BottomWall.transform.position = new Vector3(0, minY - 0.5F, 0);
         LeftWall.transform.position = new Vector3(minX - 0.5F, 0, 0);
         RightWall.transform.position = new Vector3(maxX + 0.5F, 0, 0);
+        minY += 1;
+        dispenserPositions.Add(new Vector3(minX + 0.5F, 0, -2));
+        dispenserPositions.Add(new Vector3(maxX - 0.5F, 0, -2));
+        dispenserPositions.Add(new Vector3(minX + 0.5F, minY * 1 / 3F, -2));
+        dispenserPositions.Add(new Vector3(maxX - 0.5F, minY * 1 / 3F, -2));
+        dispenserPositions.Add(new Vector3(minX + 0.5F, minY * 2 / 3F, -2));
+        dispenserPositions.Add(new Vector3(maxX - 0.5F, minY * 2 / 3F, -2));
+        var vegetables = new List<Vegetable>(GameConstants.Vegetables);
+        RandomUtil.Shuffle(vegetables);
+        for (int i = 0; i < vegetables.Count; ++i)
+        {
+            GameObject dispenser = Instantiate(DispensingStation);
+            dispenser.transform.position = dispenserPositions[i];
+            dispenser.GetComponent<VegetableDispenserBehaviour>().vegetableType = vegetables[i];
+        }
     }
 
-    // Update is called once per frame
+    // Update is called once per frame0
     void Update()
     {
         customers.ForEach(customer =>

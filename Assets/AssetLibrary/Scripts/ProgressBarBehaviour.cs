@@ -85,4 +85,11 @@ public class ProgressBarBehaviour : MonoBehaviour
             isDone = true;
         }
     }
+
+    public void DoAngryCountdownStep()
+    {
+        percentPerFrame *= GameConstants.AngrySpeedupFactor;
+        scaleGrowScalar *= GameConstants.AngrySpeedupFactor;
+        positionMoveScalar *= GameConstants.AngrySpeedupFactor;
+    }
 }

@@ -215,12 +215,46 @@ public class PlayerBehaviour : MonoBehaviour
                                 else
                                 {
                                     plate.heldObject = new Salad((Salad)scoreObject);
-
                                 }
                                 didInteractThisFrame = true;
                             }
                             break;
                         case GameConstants.CustomerTag:
+                            CustomerBehaviour customer = nearObj.GetComponent<CustomerBehaviour>();
+                            if (customer.isActive)
+                            {
+                                var activeObject = heldObjects.Dequeue();
+                                if (activeObject is Salad salad)
+                                {
+                                    if (customer.submittedFood == null)
+                                    {
+                                        customer.submittedFood = salad;
+                                        customer.submittingPlayer = this;
+                                    }
+                                    //this shouldn't happen, but if there is a salad there already, put the salad we attempt to put there back
+                                    else
+                                    {
+                                        ScoreObject tempObject = null;
+                                        if (heldObjects.Count > 0)
+                                        {
+                                            tempObject = heldObjects.Dequeue();
+                                        }
+                                        heldObjects.Enqueue(activeObject);
+                                        if (tempObject != null) heldObjects.Enqueue(tempObject);
+                                    }
+                                }
+                                //we can't give customers raw ingredients, put the thing back if it is not a salad
+                                else
+                                {
+                                    ScoreObject tempObject = null;
+                                    if (heldObjects.Count > 0)
+                                    {
+                                        tempObject = heldObjects.Dequeue();
+                                    }
+                                    heldObjects.Enqueue(activeObject);
+                                    if (tempObject != null) heldObjects.Enqueue(tempObject);
+                                }
+                            }
                             didInteractThisFrame = true;
                             break;
                         case GameConstants.CuttingBoardTag:

@@ -22,13 +22,13 @@ class RandomUtil
     {
         float scale = (float)random.NextDouble();
         float waitTime = GameConstants.CustomerAppearWaitTime * scale;
-        waitTime = Mathf.Clamp(waitTime, 0.5F, GameConstants.CustomerAppearWaitTime);
+        waitTime = Mathf.Clamp(waitTime, 1F, GameConstants.CustomerAppearWaitTime);
         return waitTime;
     }
 
     //Adapted from
     //https://www.csharp-console-examples.com/loop/c-shuffle-list/
-    private static void Shuffle<T>(IList<T> list)
+    public static void Shuffle<T>(IList<T> list)
     {
         System.Random rng = new System.Random();
         int n = list.Count;

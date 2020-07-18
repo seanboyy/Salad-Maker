@@ -154,85 +154,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1001 &95876084
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    m_TransformParent: {fileID: 0}
-    m_Modifications:
-    - target: {fileID: 336888507543650470, guid: ca809a15067220d4a977a568bc000ff1,
-        type: 3}
-      propertyPath: m_Name
-      value: VegetableDispenser (1)
-      objectReference: {fileID: 0}
-    - target: {fileID: 336888507543650492, guid: ca809a15067220d4a977a568bc000ff1,
-        type: 3}
-      propertyPath: m_LocalPosition.x
-      value: -6.1
-      objectReference: {fileID: 0}
-    - target: {fileID: 336888507543650492, guid: ca809a15067220d4a977a568bc000ff1,
-        type: 3}
-      propertyPath: m_LocalPosition.y
-      value: -0.98
-      objectReference: {fileID: 0}
-    - target: {fileID: 336888507543650492, guid: ca809a15067220d4a977a568bc000ff1,
-        type: 3}
-      propertyPath: m_LocalPosition.z
-      value: -2
-      objectReference: {fileID: 0}
-    - target: {fileID: 336888507543650492, guid: ca809a15067220d4a977a568bc000ff1,
-        type: 3}
-      propertyPath: m_LocalRotation.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 336888507543650492, guid: ca809a15067220d4a977a568bc000ff1,
-        type: 3}
-      propertyPath: m_LocalRotation.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 336888507543650492, guid: ca809a15067220d4a977a568bc000ff1,
-        type: 3}
-      propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 336888507543650492, guid: ca809a15067220d4a977a568bc000ff1,
-        type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 336888507543650492, guid: ca809a15067220d4a977a568bc000ff1,
-        type: 3}
-      propertyPath: m_RootOrder
-      value: 9
-      objectReference: {fileID: 0}
-    - target: {fileID: 336888507543650492, guid: ca809a15067220d4a977a568bc000ff1,
-        type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 336888507543650492, guid: ca809a15067220d4a977a568bc000ff1,
-        type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 336888507543650492, guid: ca809a15067220d4a977a568bc000ff1,
-        type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 336888507543650489, guid: ca809a15067220d4a977a568bc000ff1,
-        type: 3}
-      propertyPath: vegetableType
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 336888507543650489, guid: ca809a15067220d4a977a568bc000ff1,
-        type: 3}
-      propertyPath: vegetableType.name
-      value: Bud
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: ca809a15067220d4a977a568bc000ff1, type: 3}
 --- !u!1 &99080764
 GameObject:
   m_ObjectHideFlags: 0
@@ -970,7 +891,7 @@ PrefabInstance:
     - target: {fileID: 3051042024535019833, guid: 498b75da9d679c74b824526030a9c5f2,
         type: 3}
       propertyPath: m_RootOrder
-      value: 12
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 3051042024535019833, guid: 498b75da9d679c74b824526030a9c5f2,
         type: 3}
@@ -1194,7 +1115,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 10
+  m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1302145905
 GameObject:
@@ -1355,7 +1276,7 @@ PrefabInstance:
     - target: {fileID: 7862902944230386553, guid: 5a42ee1cd80a7ea47b9e646ca0a8157c,
         type: 3}
       propertyPath: m_RootOrder
-      value: 14
+      value: 12
       objectReference: {fileID: 0}
     - target: {fileID: 7862902944230386553, guid: 5a42ee1cd80a7ea47b9e646ca0a8157c,
         type: 3}
@@ -1486,7 +1407,7 @@ GameObject:
   m_Layer: 0
   m_Name: Controller
   m_TagString: Untagged
-  m_Icon: {fileID: 0}
+  m_Icon: {fileID: 5132851093641282708, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
@@ -1518,7 +1439,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   customers:
   - {fileID: 2110315336}
-  DispensingStation: {fileID: 0}
+  dispenserPositions: []
+  DispensingStation: {fileID: 336888507543650470, guid: ca809a15067220d4a977a568bc000ff1,
+    type: 3}
   TopWall: {fileID: 306087977}
   LeftWall: {fileID: 1302145905}
   RightWall: {fileID: 408485984}
@@ -1798,7 +1721,7 @@ Transform:
   m_LocalScale: {x: 10, y: 1, z: 10}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 16
+  m_RootOrder: 14
   m_LocalEulerAnglesHint: {x: 90, y: 0, z: 0}
 --- !u!1 &2110315329
 GameObject:
@@ -1837,7 +1760,7 @@ Transform:
   - {fileID: 1046049758}
   - {fileID: 99080765}
   m_Father: {fileID: 0}
-  m_RootOrder: 15
+  m_RootOrder: 13
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!65 &2110315331
 BoxCollider:
@@ -1942,85 +1865,6 @@ MonoBehaviour:
   renderedCustomer: {fileID: 1840288141}
   attachedBar: {fileID: 1046049759}
   isActive: 0
---- !u!1001 &336888508535069417
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    m_TransformParent: {fileID: 0}
-    m_Modifications:
-    - target: {fileID: 336888507543650470, guid: ca809a15067220d4a977a568bc000ff1,
-        type: 3}
-      propertyPath: m_Name
-      value: VegetableDispenser
-      objectReference: {fileID: 0}
-    - target: {fileID: 336888507543650492, guid: ca809a15067220d4a977a568bc000ff1,
-        type: 3}
-      propertyPath: m_LocalPosition.x
-      value: -6.13
-      objectReference: {fileID: 0}
-    - target: {fileID: 336888507543650492, guid: ca809a15067220d4a977a568bc000ff1,
-        type: 3}
-      propertyPath: m_LocalPosition.y
-      value: -2.66
-      objectReference: {fileID: 0}
-    - target: {fileID: 336888507543650492, guid: ca809a15067220d4a977a568bc000ff1,
-        type: 3}
-      propertyPath: m_LocalPosition.z
-      value: -2
-      objectReference: {fileID: 0}
-    - target: {fileID: 336888507543650492, guid: ca809a15067220d4a977a568bc000ff1,
-        type: 3}
-      propertyPath: m_LocalRotation.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 336888507543650492, guid: ca809a15067220d4a977a568bc000ff1,
-        type: 3}
-      propertyPath: m_LocalRotation.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 336888507543650492, guid: ca809a15067220d4a977a568bc000ff1,
-        type: 3}
-      propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 336888507543650492, guid: ca809a15067220d4a977a568bc000ff1,
-        type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 336888507543650492, guid: ca809a15067220d4a977a568bc000ff1,
-        type: 3}
-      propertyPath: m_RootOrder
-      value: 8
-      objectReference: {fileID: 0}
-    - target: {fileID: 336888507543650492, guid: ca809a15067220d4a977a568bc000ff1,
-        type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 336888507543650492, guid: ca809a15067220d4a977a568bc000ff1,
-        type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 336888507543650492, guid: ca809a15067220d4a977a568bc000ff1,
-        type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 336888507543650489, guid: ca809a15067220d4a977a568bc000ff1,
-        type: 3}
-      propertyPath: vegetableType
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 336888507543650489, guid: ca809a15067220d4a977a568bc000ff1,
-        type: 3}
-      propertyPath: vegetableType.name
-      value: Leaf
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: ca809a15067220d4a977a568bc000ff1, type: 3}
 --- !u!1001 &3051042024606003365
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2071,7 +1915,7 @@ PrefabInstance:
     - target: {fileID: 3051042024535019833, guid: 498b75da9d679c74b824526030a9c5f2,
         type: 3}
       propertyPath: m_RootOrder
-      value: 11
+      value: 9
       objectReference: {fileID: 0}
     - target: {fileID: 3051042024535019833, guid: 498b75da9d679c74b824526030a9c5f2,
         type: 3}
@@ -2209,7 +2053,7 @@ PrefabInstance:
     - target: {fileID: 7862902944230386553, guid: 5a42ee1cd80a7ea47b9e646ca0a8157c,
         type: 3}
       propertyPath: m_RootOrder
-      value: 13
+      value: 11
       objectReference: {fileID: 0}
     - target: {fileID: 7862902944230386553, guid: 5a42ee1cd80a7ea47b9e646ca0a8157c,
         type: 3}

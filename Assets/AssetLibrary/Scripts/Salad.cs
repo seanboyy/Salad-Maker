@@ -27,11 +27,12 @@ public class Salad : ScoreObject
 
     public bool CompareTo(Salad comparable)
     {
+        bool didNotFindMatch = false;
         foreach (var vegetable in ingredients)
         {
             if (!comparable.ingredients.Contains(vegetable)) return false;
         }
-        return true;
+        return !didNotFindMatch;
     }
 
     private void DoUpdateName()
@@ -48,10 +49,5 @@ public class Salad : ScoreObject
     public int GetIngredientCount()
     {
         return ingredients.Count;
-    }
-
-    public override string ToString()
-    {
-        return name;
     }
 }

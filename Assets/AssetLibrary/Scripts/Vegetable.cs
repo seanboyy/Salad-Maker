@@ -29,4 +29,14 @@ public class Vegetable : ScoreObject
             name = "Chopped " + name;
         }
     }
+
+    public override bool Equals(object obj)
+    {
+        return obj is Vegetable vegetable && vegetable.name == name;
+    }
+
+    public override int GetHashCode()
+    {
+        return name.GetHashCode();
+    }
 }

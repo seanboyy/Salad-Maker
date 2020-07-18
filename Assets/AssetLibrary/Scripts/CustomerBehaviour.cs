@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngineInternal;
@@ -15,12 +16,18 @@ public class CustomerBehaviour : MonoBehaviour
 
     public Salad submittedFood = null;
 
+    [NonSerialized]
+    public PlayerBehaviour submittingPlayer = null;
+
     public bool isActive = false;
+    public bool player1Mad = false;
+    public bool player2Mad = false;
 
     private Vector3 position;
 
     void Start()
     {
+        renderedCustomer.SetActive(false);
         text = GetComponentInChildren<TextMesh>();
         position = transform.position;
     }
@@ -31,11 +38,14 @@ public class CustomerBehaviour : MonoBehaviour
         transform.position = position;
         if (isActive) renderedCustomer.SetActive(true);
         else renderedCustomer.SetActive(false);
-        if (order != null) text.text = order.ToString();
+        if (order != null) text.text = order.ToString().Replace(' ','\n');
+        else text.text = "";
         if (submittedFood != null)
         {
             if (order.CompareTo(submittedFood)) DoLeave(true);
             else GetAngry();
+            submittingPlayer = null;
+            submittedFood = null;
         }
         if (attachedBar.isDone) DoLeave(false);
     }
@@ -56,12 +66,25 @@ public class CustomerBehaviour : MonoBehaviour
     public void DoLeave(bool satisfied)
     {
         Debug.Log(string.Format("Customer is {0}satisfied and is now leaving", satisfied ? "" : "not "));
+        order = null;
         isActive = false;
+        player1Mad = false;
+        player2Mad = false;
         attachedBar.ResetProgressBar();
     }
 
     public void GetAngry()
     {
+        attachedBar.DoAngryCountdownStep();
         Debug.Log("Incorrect, Customer is now Angry");
+        switch (submittingPlayer.playerNumber)
+        {
+            case 1:
+                player1Mad = true;
+                break;
+            case 2:
+                player2Mad = true;
+                break;
+        }
     }
 }
