@@ -375,6 +375,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   renderedCustomer: {fileID: 9107801637142077792}
   attachedBar: {fileID: 9107801635781526322}
+  powerUpPrefab: {fileID: 80399978160444884, guid: 483a1fea1eefabb43881b53dab9008e4,
+    type: 3}
   isActive: 0
   player1Mad: 0
   player2Mad: 0

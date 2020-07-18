@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngineInternal;
 
 public class CustomerBehaviour : MonoBehaviour
 {
@@ -15,6 +12,8 @@ public class CustomerBehaviour : MonoBehaviour
     public Salad order;
 
     public Salad submittedFood = null;
+
+    public GameObject powerUpPrefab;
 
     [NonSerialized]
     public PlayerBehaviour submittingPlayer = null;
@@ -36,8 +35,6 @@ public class CustomerBehaviour : MonoBehaviour
     void Update()
     {
         transform.position = position;
-        if (isActive) renderedCustomer.SetActive(true);
-        else renderedCustomer.SetActive(false);
         if (order != null) text.text = order.ToString().Replace(' ','\n');
         else text.text = "";
         if (submittedFood != null)
@@ -52,6 +49,7 @@ public class CustomerBehaviour : MonoBehaviour
 
     public void StartCustomer()
     {
+        renderedCustomer.SetActive(true);
         Debug.Log("Starting Customer");
         order = new Salad();
         var ingredients = RandomUtil.CreateRandomCombination();
@@ -65,10 +63,28 @@ public class CustomerBehaviour : MonoBehaviour
 
     public void DoLeave(bool satisfied)
     {
+        renderedCustomer.SetActive(false);
         Debug.Log(string.Format("Customer is {0}satisfied and is now leaving", satisfied ? "" : "not "));
         if (attachedBar.percentComplete <= 0.3F)
         {
-            //Do spawn powerup
+            if (RandomUtil.GenerateFloat() > 0.5F)
+            {
+                //Do spawn time up
+                DoSpawnPowerUp(PowerUpType.TimeUp);
+            }
+            else
+            {
+                if (RandomUtil.GenerateFloat() > 0.5F)
+                {
+                    //Do spawn score up
+                    DoSpawnPowerUp(PowerUpType.PointsUp);
+                }
+                else
+                {
+                    //Do spawn speed up
+                    DoSpawnPowerUp(PowerUpType.SpeedUp);
+                }
+            }
         }
         order = null;
         isActive = false;
@@ -90,5 +106,14 @@ public class CustomerBehaviour : MonoBehaviour
                 player2Mad = true;
                 break;
         }
+    }
+
+    private void DoSpawnPowerUp(PowerUpType type)
+    {
+        var newPowerUp = Instantiate(powerUpPrefab);
+        PowerUpBehaviour powerUp = newPowerUp.GetComponent<PowerUpBehaviour>();
+        powerUp.type = type;
+        powerUp.transform.position = RandomUtil.GenerateNonOccupiedPosition();
+        powerUp.owningPlayer = submittingPlayer.playerNumber;
     }
 }

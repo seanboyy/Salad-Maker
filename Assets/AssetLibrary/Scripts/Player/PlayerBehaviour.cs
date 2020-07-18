@@ -10,6 +10,8 @@ public class PlayerBehaviour : MonoBehaviour
     private CharacterController controller;
     private TextMesh text;
 
+    public bool timeIsUp = false;
+
     [Header("Player Attribues")]
     public float speed = 10.0F;
     public int playerNumber = 0;
@@ -42,7 +44,7 @@ public class PlayerBehaviour : MonoBehaviour
     {
         didInteractThisFrame = false;
         float deltaX = 0F, deltaY = 0F;
-        if (!isChopping)
+        if (!isChopping || timeIsUp)
         {
             #region Movement
             if (playerNumber == 1)
