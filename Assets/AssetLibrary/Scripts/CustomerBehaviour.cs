@@ -36,7 +36,7 @@ public class CustomerBehaviour : MonoBehaviour
     void Update()
     {
         transform.position = position;
-        if (order != null) text.text = order.ToString().Replace(' ','\n');
+        if (order != null) text.text = order.ToString().Replace(' ', '\n');
         else text.text = "";
         if (submittedFood != null)
         {
@@ -67,26 +67,53 @@ public class CustomerBehaviour : MonoBehaviour
     {
         canAcceptFood = false;
         renderedCustomer.SetActive(false);
-        Debug.Log(string.Format("Customer is {0}satisfied and is now leaving", satisfied ? "" : "not "));
-        if (attachedBar.percentComplete <= 0.3F)
+        var controller = FindObjectOfType<MainSceneController>();
+        if (satisfied)
         {
-            if (RandomUtil.GenerateFloat() > 0.5F)
+            switch (submittingPlayer.playerNumber)
             {
-                //Do spawn time up
-                DoSpawnPowerUp(PowerUpType.TimeUp);
+                case 1:
+                    controller.player1Score += GameConstants.ScorePerIngredient * order.GetIngredientCount();
+                    break;
+                case 2:
+                    controller.player2Score += GameConstants.ScorePerIngredient * order.GetIngredientCount();
+                    break;
             }
-            else
+            if (attachedBar.percentComplete <= 0.3F)
             {
                 if (RandomUtil.GenerateFloat() > 0.5F)
                 {
-                    //Do spawn score up
-                    DoSpawnPowerUp(PowerUpType.PointsUp);
+                    //Do spawn time up
+                    DoSpawnPowerUp(PowerUpType.TimeUp);
                 }
                 else
                 {
-                    //Do spawn speed up
-                    DoSpawnPowerUp(PowerUpType.SpeedUp);
+                    if (RandomUtil.GenerateFloat() > 0.5F)
+                    {
+                        //Do spawn score up
+                        DoSpawnPowerUp(PowerUpType.PointsUp);
+                    }
+                    else
+                    {
+                        //Do spawn speed up
+                        DoSpawnPowerUp(PowerUpType.SpeedUp);
+                    }
                 }
+            }
+        }
+        else
+        {
+            if (player1Mad && player2Mad)
+            {
+                controller.player1Score -= GameConstants.ScorePerIngredient * order.GetIngredientCount() * 2;
+                controller.player2Score -= GameConstants.ScorePerIngredient * order.GetIngredientCount() * 2;
+            }
+            else if (player1Mad) controller.player1Score -= GameConstants.ScorePerIngredient * order.GetIngredientCount() * 2;
+            else if (player2Mad) controller.player2Score -= GameConstants.ScorePerIngredient * order.GetIngredientCount() * 2;
+            else
+            {
+                controller.player1Score -= GameConstants.ScorePerIngredient * order.GetIngredientCount();
+                controller.player2Score -= GameConstants.ScorePerIngredient * order.GetIngredientCount();
             }
         }
         order = null;

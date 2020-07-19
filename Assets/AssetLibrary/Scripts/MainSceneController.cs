@@ -36,6 +36,7 @@ public class MainSceneController : MonoBehaviour
     private float aspect = 0.0F;
 
     private bool secondPass = false;
+    private bool gameOver = false;
 
     // Start is called before the first frame update
     void Start()
@@ -83,21 +84,24 @@ public class MainSceneController : MonoBehaviour
     {
         StringBuilder stringBuilder1 = new StringBuilder();
         StringBuilder stringBuilder2 = new StringBuilder();
-        stringBuilder1.Append(player1Time);
-        stringBuilder1.Append("\n" + player1Score);
-        stringBuilder2.Append(player2Time);
-        stringBuilder2.Append("\n" + player2Score);
+        stringBuilder1.Append("Time: " + player1Time);
+        stringBuilder1.Append("\nScore: " + player1Score);
+        stringBuilder2.Append("Time: " + player2Time);
+        stringBuilder2.Append("\nScore: " + player2Score);
         Player1Text.GetComponent<TextMesh>().text = stringBuilder1.ToString();
         Player2Text.GetComponent<TextMesh>().text = stringBuilder2.ToString();
-        if (secondPass) StartCoroutine("Timer");
+        if (secondPass && !gameOver) StartCoroutine("Timer");
         if (player1Time == 0 && player2Time == 0)
         {
             DoStopGame();
         }
-        customers.ForEach(customer =>
+        if (!gameOver)
         {
-            if (!customer.isActive) StartCoroutine("WaitToStartCustomer", customer);
-        });
+            customers.ForEach(customer =>
+            {
+                if (!customer.isActive) StartCoroutine("WaitToStartCustomer", customer);
+            });
+        }
         if (Camera.main.aspect != aspect)
         {
             float extent = Camera.main.orthographicSize;
@@ -117,6 +121,13 @@ public class MainSceneController : MonoBehaviour
 
     void DoStopGame()
     {
+        Debug.Log("Game Over!");
+        StopAllCoroutines();
+        foreach (var customer in customers)
+        {
+            customer.isActive = false;
+
+        }
         //Do Stop Game
     }
 
@@ -133,6 +144,10 @@ public class MainSceneController : MonoBehaviour
         yield return new WaitForSecondsRealtime(1);
         Mathf.Clamp(--player1Time, 0, int.MaxValue);
         Mathf.Clamp(--player2Time, 0, int.MaxValue);
+        if (player1Time == 0 && player2Time == 0)
+        {
+            gameOver = true;
+        }
         secondPass = true;
     }
 }
