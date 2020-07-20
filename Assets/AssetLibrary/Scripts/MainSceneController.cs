@@ -133,7 +133,6 @@ public class MainSceneController : MonoBehaviour
         //render endgamescreen and startup highscore table
         EndGameScreen.SetActive(true);
         HighScoreTableBehaviour highScoreTable = EndGameScreen.GetComponentInChildren<HighScoreTableBehaviour>();
-        Debug.Log(highScoreTable.name);
         //save highest score from game or just P1 if they are both equal
         if (player1Score != player2Score)
         {
