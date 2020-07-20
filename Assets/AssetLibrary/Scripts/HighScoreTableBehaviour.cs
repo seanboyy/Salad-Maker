@@ -17,7 +17,8 @@ public class HighScoreTableBehaviour : MonoBehaviour
     public void DoUpdateHighscoreTable()
     {
         //destroy old highscore table if it exists
-        foreach (var transform in transformsList) {
+        foreach (var transform in transformsList)
+        {
             Destroy(transform.gameObject);
         }
         //remove template (shouldn't show it)
@@ -76,13 +77,22 @@ public class HighScoreTableBehaviour : MonoBehaviour
         rect.anchoredPosition = new Vector2(0, -height * transforms.Count);
         transform.gameObject.SetActive(true);
         var rank = transforms.Count + 1;
-        //inline switch to convert number to ordinals
-        string rankString = rank switch
+        //Switch statement to turn numbers into ordinals
+        string rankString;
+        switch (rank)
         {
-            1 => "1ST",
-            2 => "2ND",
-            3 => "3RD",
-            _ => rank + "TH",
+            case 1:
+                rankString = "1ST";
+                break;
+            case 2:
+                rankString = "2ND";
+                break;
+            case 3:
+                rankString = "3RD";
+                break;
+            default:
+                rankString = rank + "TH";
+                break;
         };
         transform.Find("Position").GetComponent<Text>().text = rankString;
         transform.Find("Score").GetComponent<Text>().text = entry.score.ToString();
