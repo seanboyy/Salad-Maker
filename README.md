@@ -22,7 +22,7 @@ Move with Arrow Keys (UP, LEFT, RIGHT, DOWN)
 
 Pick up and place food with RIGHT SHIFT
 
-##Miscellaneous
+## Miscellaneous
 If a player satisfies a customers' order within 30% on the customer's wait time,
 the customer will spawn a powerup for the player that submitted the food. The
 powerup does one of three thing: Increases player speed, increases time left for
