@@ -32,15 +32,22 @@ public class MainSceneController : MonoBehaviour
     [Header("Scores")]
     public int player1Score = 0;
     public int player2Score = 0;
+    [Header("Players")]
+    public PlayerBehaviour player1;
+    public PlayerBehaviour player2;
+    [Header("End Game Screen")]
+    public GameObject EndGameScreen;
 
     private float aspect = 0.0F;
 
     private bool secondPass = false;
     private bool gameOver = false;
+    private bool gameIsStopped = false;
 
     // Start is called before the first frame update
     void Start()
     {
+        EndGameScreen.SetActive(false);
         player1Time = 120;
         player2Time = 120;
         float extent = Camera.main.orthographicSize;
@@ -82,6 +89,8 @@ public class MainSceneController : MonoBehaviour
     // Update is called once per frame0
     void Update()
     {
+        if (player1Time == 0) player1.timeIsUp = true;
+        if (player2Time == 0) player2.timeIsUp = true;
         StringBuilder stringBuilder1 = new StringBuilder();
         StringBuilder stringBuilder2 = new StringBuilder();
         stringBuilder1.Append("Time: " + player1Time);
@@ -91,7 +100,7 @@ public class MainSceneController : MonoBehaviour
         Player1Text.GetComponent<TextMesh>().text = stringBuilder1.ToString();
         Player2Text.GetComponent<TextMesh>().text = stringBuilder2.ToString();
         if (secondPass && !gameOver) StartCoroutine("Timer");
-        if (player1Time == 0 && player2Time == 0)
+        if (player1Time == 0 && player2Time == 0 && !gameIsStopped)
         {
             DoStopGame();
         }
@@ -121,14 +130,42 @@ public class MainSceneController : MonoBehaviour
 
     void DoStopGame()
     {
-        Debug.Log("Game Over!");
+        gameIsStopped = true;
         StopAllCoroutines();
         foreach (var customer in customers)
         {
             customer.isActive = false;
-
         }
-        //Do Stop Game
+        EndGameScreen.SetActive(true);
+        HighScoreTableBehaviour highScoreTable = EndGameScreen.GetComponentInChildren<HighScoreTableBehaviour>();
+        Debug.Log(highScoreTable.name);
+        if (player1Score != player2Score)
+        {
+            highScoreTable.AddHighscoreEntry(Mathf.Max(player1Score, player2Score));
+        }
+        else
+        {
+            highScoreTable.AddHighscoreEntry(player1Score);
+        }
+        highScoreTable.DoUpdateHighscoreTable();
+    }
+
+    public void DoRestartGame()
+    {
+        gameOver = false;
+        EndGameScreen.SetActive(false);
+        player1Time = 120;
+        player2Time = 120;
+        player1Score = 0;
+        player2Score = 0;
+        StartCoroutine("Timer");
+        gameIsStopped = false;
+        player1.timeIsUp = false;
+        player2.timeIsUp = false;
+        foreach (var customer in customers)
+        {
+            customer.ForceResetCustomer();
+        }
     }
 
     IEnumerator WaitToStartCustomer(CustomerBehaviour customer)
@@ -144,6 +181,8 @@ public class MainSceneController : MonoBehaviour
         yield return new WaitForSecondsRealtime(1);
         Mathf.Clamp(--player1Time, 0, int.MaxValue);
         Mathf.Clamp(--player2Time, 0, int.MaxValue);
+        if (player1Time < 0) player1Time = 0;
+        if (player2Time < 0) player2Time = 0;
         if (player1Time == 0 && player2Time == 0)
         {
             gameOver = true;

@@ -52,14 +52,12 @@ public class CustomerBehaviour : MonoBehaviour
     {
         canAcceptFood = true;
         renderedCustomer.SetActive(true);
-        Debug.Log("Starting Customer");
         order = new Salad();
         var ingredients = RandomUtil.CreateRandomCombination();
         foreach (var ingredient in ingredients)
         {
             order.AddIngredient(ingredient);
         }
-        Debug.Log(order);
         if (attachedBar != null) attachedBar.StartProgressBar(GameConstants.WaitTime * GameConstants.RecipeComplexityScale * order.GetIngredientCount());
     }
 
@@ -126,7 +124,6 @@ public class CustomerBehaviour : MonoBehaviour
     public void GetAngry()
     {
         attachedBar.DoAngryCountdownStep();
-        Debug.Log("Incorrect, Customer is now Angry");
         switch (submittingPlayer.playerNumber)
         {
             case 1:
@@ -145,5 +142,15 @@ public class CustomerBehaviour : MonoBehaviour
         powerUp.type = type;
         powerUp.transform.position = RandomUtil.GenerateNonOccupiedPosition();
         powerUp.owningPlayer = submittingPlayer.playerNumber;
+    }
+
+    public void ForceResetCustomer()
+    {
+        canAcceptFood = false;
+        order = null;
+        isActive = false;
+        player1Mad = false;
+        player2Mad = false;
+        attachedBar.ResetProgressBar();
     }
 }

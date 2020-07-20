@@ -44,7 +44,7 @@ public class PlayerBehaviour : MonoBehaviour
     {
         didInteractThisFrame = false;
         float deltaX = 0F, deltaY = 0F;
-        if (!isChopping || timeIsUp)
+        if (!isChopping && !timeIsUp)
         {
             #region Movement
             if (playerNumber == 1)

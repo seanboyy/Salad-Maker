@@ -38,8 +38,6 @@ public class ProgressBarBehaviour : MonoBehaviour
             progressBarForeground.SetActive(false);
         }
         progressBarBackground.SetActive(false);
-        Debug.Log(startPos);
-        Debug.Log(startScale);
     }
 
     public void StartProgressBar(float time)
