@@ -35,7 +35,6 @@ public class PowerUpBehaviour : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
-            Debug.Log("Encountered a player!");
             PlayerBehaviour nearPlayer = other.gameObject.GetComponent<PlayerBehaviour>();
             if (nearPlayer.playerNumber == owningPlayer)
             {

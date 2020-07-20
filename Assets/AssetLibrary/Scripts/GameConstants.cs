@@ -13,7 +13,7 @@ class GameConstants
 
     #region Numbers
     public const float ChopTime = 2.0F;
-    public const float WaitTime = 13.0F;
+    public const float WaitTime = 20.0F;
     public const float RecipeComplexityScale = 1.5F;
     public const float CustomerAppearWaitTime = 6F;
     public const float AngrySpeedupFactor = 1.5F;

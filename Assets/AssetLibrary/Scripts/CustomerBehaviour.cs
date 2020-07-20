@@ -149,6 +149,7 @@ public class CustomerBehaviour : MonoBehaviour
         canAcceptFood = false;
         order = null;
         isActive = false;
+        renderedCustomer.SetActive(false);
         player1Mad = false;
         player2Mad = false;
         attachedBar.ResetProgressBar();

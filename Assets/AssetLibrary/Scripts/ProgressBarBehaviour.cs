@@ -8,6 +8,9 @@ public class ProgressBarBehaviour : MonoBehaviour
 
     public float time = 0F;
 
+    private Color green = new Color(0F, 1F, 0F, 1F);
+    private Color red = new Color(1F, 0F, 0F, 1F);
+
     [NonSerialized]
     public float percentComplete;
     private float percentPerFrame;
@@ -76,6 +79,14 @@ public class ProgressBarBehaviour : MonoBehaviour
         if (hasStarted && percentComplete < 1F)
         {
             percentComplete += percentPerFrame;
+            if (isReversed)
+            {
+                progressBarForeground.GetComponent<Renderer>().material.color = new Color(percentComplete, 1F - percentComplete, 0F, 1F);
+            }
+            else
+            {
+                progressBarForeground.GetComponent<Renderer>().material.color = new Color(1F - percentComplete, percentComplete, 0F, 1F);
+            }
             progressBarForeground.transform.position += new Vector3(positionMoveScalar, 0, 0);
             progressBarForeground.transform.localScale += new Vector3(scaleGrowScalar, 0, 0);
         }

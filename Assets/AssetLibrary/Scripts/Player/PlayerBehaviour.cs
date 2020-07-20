@@ -226,11 +226,11 @@ public class PlayerBehaviour : MonoBehaviour
                             if (customer.canAcceptFood)
                             {
                                 var activeObject = heldObjects.Dequeue();
-                                if (activeObject is Salad salad)
+                                if (activeObject is Salad salad1)
                                 {
                                     if (customer.submittedFood == null)
                                     {
-                                        customer.submittedFood = salad;
+                                        customer.submittedFood = salad1;
                                         customer.submittingPlayer = this;
                                     }
                                     //this shouldn't happen, but if there is a salad there already, put the salad we attempt to put there back
@@ -264,11 +264,11 @@ public class PlayerBehaviour : MonoBehaviour
                             if (!cuttingBoard.working)
                             {
                                 var activeObject = heldObjects.Dequeue();
-                                if (activeObject is Salad salad)
+                                if (activeObject is Salad salad1)
                                 {
                                     if (cuttingBoard.activeSalad == null)
                                     {
-                                        cuttingBoard.activeSalad = new Salad(salad);
+                                        cuttingBoard.activeSalad = new Salad(salad1);
                                         didInteractThisFrame = true;
                                     }
                                     //there is already a salad there, so we shouldn't place one. Restore queue to previous state
@@ -311,7 +311,32 @@ public class PlayerBehaviour : MonoBehaviour
                             break;
                         case GameConstants.TrashTag:
                         default:
-                            heldObjects.Dequeue();
+                            var mainController = FindObjectOfType<MainSceneController>();
+                            var droppedObject = heldObjects.Dequeue();
+                            if (droppedObject is Salad salad)
+                            {
+                                switch (playerNumber)
+                                {
+                                    case 1:
+                                        mainController.player1Score -= salad.GetIngredientCount() * GameConstants.ScorePerIngredient;
+                                        break;
+                                    case 2:
+                                        mainController.player2Score -= salad.GetIngredientCount() * GameConstants.ScorePerIngredient;
+                                        break;
+                                }
+                            }
+                            else if (droppedObject is Vegetable)
+                            {
+                                switch (playerNumber)
+                                {
+                                    case 1:
+                                        mainController.player1Score -= GameConstants.ScorePerIngredient;
+                                        break;
+                                    case 2:
+                                        mainController.player2Score -= GameConstants.ScorePerIngredient;
+                                        break;
+                                }
+                            }
                             break;
                     }
                 }

@@ -35,12 +35,14 @@ public class MainSceneController : MonoBehaviour
     [Header("Players")]
     public PlayerBehaviour player1;
     public PlayerBehaviour player2;
-    [Header("End Game Screen")]
+    [Header("Info Screens")]
     public GameObject EndGameScreen;
+    public GameObject StartGameScreen;
 
     private float aspect = 0.0F;
 
     private bool secondPass = false;
+    private bool gameStart = false;
     private bool gameOver = false;
     private bool gameIsStopped = false;
 
@@ -104,7 +106,7 @@ public class MainSceneController : MonoBehaviour
         {
             DoStopGame();
         }
-        if (!gameOver)
+        if (!gameOver && gameStart)
         {
             customers.ForEach(customer =>
             {
@@ -131,7 +133,7 @@ public class MainSceneController : MonoBehaviour
     void DoStopGame()
     {
         gameIsStopped = true;
-        StopAllCoroutines();
+         StopAllCoroutines();
         foreach (var customer in customers)
         {
             customer.isActive = false;
@@ -162,10 +164,22 @@ public class MainSceneController : MonoBehaviour
         gameIsStopped = false;
         player1.timeIsUp = false;
         player2.timeIsUp = false;
+        var activePowerUps = FindObjectsOfType<PowerUpBehaviour>();
+        foreach (var powerUp in activePowerUps)
+        {
+            Destroy(powerUp.gameObject);
+        }
         foreach (var customer in customers)
         {
             customer.ForceResetCustomer();
         }
+    }
+
+    public void DoStartGame()
+    {
+        gameStart = true;
+        StartGameScreen.SetActive(false);
+        StartCoroutine("Timer");
     }
 
     IEnumerator WaitToStartCustomer(CustomerBehaviour customer)

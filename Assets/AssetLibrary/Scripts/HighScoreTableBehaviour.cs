@@ -101,7 +101,7 @@ public class HighScoreTableBehaviour : MonoBehaviour
 
         public HighscoreEntry(int score)
         {
-            score = score;
+            this.score = score;
         }
     }
 }
