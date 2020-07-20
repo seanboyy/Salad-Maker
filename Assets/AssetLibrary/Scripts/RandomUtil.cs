@@ -1,6 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Runtime.InteropServices;
-using UnityEditor;
 using UnityEngine;
 
 class RandomUtil
@@ -49,6 +47,7 @@ class RandomUtil
         return (float)random.NextDouble();
     }
 
+    //Used by power up to spawn powerup in a place where players aren't and inside of the playable area
     public static Vector3 GenerateNonOccupiedPosition()
     {
         float extent = Camera.main.orthographicSize;

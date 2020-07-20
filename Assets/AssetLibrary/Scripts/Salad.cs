@@ -25,6 +25,7 @@ public class Salad : ScoreObject
         DoUpdateName();
     }
 
+    //compare salad to other salad. matches if they have the same ingredients, not necessarily in same order
     public bool CompareTo(Salad comparable)
     {
         bool didNotFindMatch = false;

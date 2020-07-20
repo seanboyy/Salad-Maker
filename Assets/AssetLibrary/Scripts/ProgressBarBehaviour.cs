@@ -79,6 +79,7 @@ public class ProgressBarBehaviour : MonoBehaviour
         if (hasStarted && percentComplete < 1F)
         {
             percentComplete += percentPerFrame;
+            //go between red and green based on how done progress bar is
             if (isReversed)
             {
                 progressBarForeground.GetComponent<Renderer>().material.color = new Color(percentComplete, 1F - percentComplete, 0F, 1F);
@@ -96,6 +97,7 @@ public class ProgressBarBehaviour : MonoBehaviour
         }
     }
 
+    //increase rate at which progress bar moves
     public void DoAngryCountdownStep()
     {
         percentPerFrame *= GameConstants.AngrySpeedupFactor;

@@ -19,6 +19,7 @@ public class CuttingBoardBehaviour : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        //Only thing to do here is to make the cutting board display the salad active on it and ingredients being chopped
         StringBuilder stringBuilder = new StringBuilder(ingredient != null ? ingredient.name : "");
         stringBuilder.Append("\n" + (activeSalad != null ? activeSalad.name : ""));
         text.text = stringBuilder.ToString();

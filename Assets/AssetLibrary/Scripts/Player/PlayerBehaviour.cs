@@ -32,14 +32,12 @@ public class PlayerBehaviour : MonoBehaviour
 
     public Queue<ScoreObject> heldObjects = new Queue<ScoreObject>(2);
 
-    // Start is called before the first frame update
     void Start()
     {
         controller = GetComponent<CharacterController>();
         text = GetComponentInChildren<TextMesh>();
     }
 
-    // Update is called once per frame
     void Update()
     {
         didInteractThisFrame = false;
@@ -47,8 +45,10 @@ public class PlayerBehaviour : MonoBehaviour
         if (!isChopping && !timeIsUp)
         {
             #region Movement
+            //Handle movement for each player according to the controls spelled out in PlayerConstants.ControlsDict
             if (playerNumber == 1)
             {
+                //if left & right, do not move
                 if (Input.GetKey(PlayerConstants.ControlsDict[PlayerConstants.PlayerControls.Player1Left]) &&
                     Input.GetKey(PlayerConstants.ControlsDict[PlayerConstants.PlayerControls.Player1Right]))
                 {
@@ -62,6 +62,7 @@ public class PlayerBehaviour : MonoBehaviour
                 {
                     deltaX = 1 * speed * Time.deltaTime;
                 }
+                //if up & down, do not move
                 if (Input.GetKey(PlayerConstants.ControlsDict[PlayerConstants.PlayerControls.Player1Up]) &&
                     Input.GetKey(PlayerConstants.ControlsDict[PlayerConstants.PlayerControls.Player1Down]))
                 {
@@ -78,6 +79,7 @@ public class PlayerBehaviour : MonoBehaviour
             }
             else if (playerNumber == 2)
             {
+                //if left & right, do not move
                 if (Input.GetKey(PlayerConstants.ControlsDict[PlayerConstants.PlayerControls.Player2Left]) &&
                     Input.GetKey(PlayerConstants.ControlsDict[PlayerConstants.PlayerControls.Player2Right]))
                 {
@@ -91,6 +93,7 @@ public class PlayerBehaviour : MonoBehaviour
                 {
                     deltaX = 1 * speed * Time.deltaTime;
                 }
+                //if up & down, do not move
                 if (Input.GetKey(PlayerConstants.ControlsDict[PlayerConstants.PlayerControls.Player2Up]) &&
                     Input.GetKey(PlayerConstants.ControlsDict[PlayerConstants.PlayerControls.Player2Down]))
                 {
@@ -109,6 +112,10 @@ public class PlayerBehaviour : MonoBehaviour
             controller.Move(new Vector3(deltaX, deltaY));
             #endregion
             #region Interaction
+            //Handle interaction for each player
+            //didInteractThisFrame is a sentinel used to stop repeat actions based on frame border handling
+            //other flags are if the player is near an interactible object
+            //Handle drop interaction
             if (!didInteractThisFrame && (isNearTrash || (isNearCuttingBoard && heldObjects.Count > 0) || isNearCustomer || isNearPlate))
             {
                 if (playerNumber == 1)
@@ -126,6 +133,7 @@ public class PlayerBehaviour : MonoBehaviour
                     }
                 }
             }
+            //Handle pickup interaction
             if (!didInteractThisFrame && (isNearDispenser || (isNearCuttingBoard && heldObjects.Count == 0) || (isNearPlate && heldObjects.Count < 2)))
             {
                 if (playerNumber == 1)
@@ -148,6 +156,7 @@ public class PlayerBehaviour : MonoBehaviour
         }
     }
 
+    //Handle trigger collisions, which tell the player what it is near
     void OnTriggerEnter(Collider other)
     {
         if (other.gameObject != gameObject)
@@ -165,6 +174,7 @@ public class PlayerBehaviour : MonoBehaviour
         }
     }
 
+    //Handle trigger leave collisions, which let the player know they are not near something now
     void OnTriggerExit(Collider other)
     {
         if (other.gameObject != gameObject)
@@ -174,6 +184,7 @@ public class PlayerBehaviour : MonoBehaviour
         }
     }
 
+    //Set the near object to the most recent near object
     void UpdateNear(string otherTag, bool flag)
     {
         switch (otherTag)
@@ -196,17 +207,22 @@ public class PlayerBehaviour : MonoBehaviour
         }
     }
 
+    //Handle the actual interaction
     void TryInteract(PlayerConstants.InteractMode mode, GameObject nearObj)
     {
+        //Modes are drop and pickup
         switch (mode)
         {
             case PlayerConstants.InteractMode.Drop:
+                //the player has something to drop?
                 if (heldObjects.Count > 0)
                 {
                     switch (nearObj.tag)
                     {
+                        //player is dropping object onto plate
                         case GameConstants.PlateTag:
                             PlateBehaviour plate = nearObj.GetComponent<PlateBehaviour>();
+                            //plate has no object stored
                             if (plate.heldObject.name == "")
                             {
                                 var scoreObject = heldObjects.Dequeue();
@@ -221,10 +237,13 @@ public class PlayerBehaviour : MonoBehaviour
                                 didInteractThisFrame = true;
                             }
                             break;
+                        //player is dropping object onto customer
                         case GameConstants.CustomerTag:
                             CustomerBehaviour customer = nearObj.GetComponent<CustomerBehaviour>();
+                            //customer is active and ready for food
                             if (customer.canAcceptFood)
                             {
+                                //dequeue object, getting ready to put it in front of customer
                                 var activeObject = heldObjects.Dequeue();
                                 if (activeObject is Salad salad1)
                                 {
@@ -259,8 +278,10 @@ public class PlayerBehaviour : MonoBehaviour
                             }
                             didInteractThisFrame = true;
                             break;
+                        //player is dropping object onto cutting board
                         case GameConstants.CuttingBoardTag:
                             CuttingBoardBehaviour cuttingBoard = nearObj.GetComponent<CuttingBoardBehaviour>();
+                            //the cutting board is not busy, so objects can be dropped on it
                             if (!cuttingBoard.working)
                             {
                                 var activeObject = heldObjects.Dequeue();
@@ -285,6 +306,7 @@ public class PlayerBehaviour : MonoBehaviour
                                 }
                                 else if (activeObject is Vegetable vegetable)
                                 {
+                                    //cutting board has no ingredients, and is ready to start chopping. Do so.
                                     if (cuttingBoard.ingredient.name == "")
                                     {
                                         cuttingBoard.ingredient = new Vegetable(vegetable);
@@ -309,10 +331,13 @@ public class PlayerBehaviour : MonoBehaviour
                                 }
                             }
                             break;
+                        //player is dropping object onto trash
                         case GameConstants.TrashTag:
                         default:
+                            //get scene controller
                             var mainController = FindObjectOfType<MainSceneController>();
                             var droppedObject = heldObjects.Dequeue();
+                            //deduct points based on what player is throwing away
                             if (droppedObject is Salad salad)
                             {
                                 switch (playerNumber)
@@ -341,20 +366,25 @@ public class PlayerBehaviour : MonoBehaviour
                     }
                 }
                 break;
+            //picking up food
             case PlayerConstants.InteractMode.PickUp:
                 switch (nearObj.tag)
                 {
+                    //player is picking up from vegetable dispenser
                     case GameConstants.DispenserTag:
                         VegetableDispenserBehaviour vegetableDispenser = nearObj.GetComponent<VegetableDispenserBehaviour>();
+                        //player has room for another item?
                         if (heldObjects.Count < 2)
                         {
                             heldObjects.Enqueue(new Vegetable(vegetableDispenser.vegetableType));
                         }
                         didInteractThisFrame = true;
                         break;
+                    //player is picking up from plate
                     case GameConstants.PlateTag:
                         PlateBehaviour plate = nearObj.GetComponent<PlateBehaviour>();
-                        if (plate.heldObject.name != "")
+                        //plate has item and player can hold it?
+                        if (plate.heldObject.name != "" && heldObjects.Count < 2)
                         {
                             if (plate.heldObject is Vegetable vegetable) {
                                 heldObjects.Enqueue(new Vegetable(vegetable));
@@ -368,9 +398,11 @@ public class PlayerBehaviour : MonoBehaviour
                         break;
                     case GameConstants.CuttingBoardTag:
                         CuttingBoardBehaviour cuttingBoard = nearObj.GetComponent<CuttingBoardBehaviour>();
+                        //cutting board is not busy?
                         if (!cuttingBoard.working)
                         {
-                            if (cuttingBoard.activeSalad != null)
+                            //cutting board has item to pick up and player can hold it?
+                            if (cuttingBoard.activeSalad != null && heldObjects.Count < 2)
                             {
                                 heldObjects.Enqueue(cuttingBoard.activeSalad);
                                 cuttingBoard.activeSalad = null;
@@ -386,9 +418,11 @@ public class PlayerBehaviour : MonoBehaviour
         {
             stringBuilder.Append(string.Format("{0}\n", vegetable.name));
         }
+        //set player text to the names of the items held
         text.text = stringBuilder.ToString();
     }
 
+    //do chopping coroutine, used to freeze player for duration of GameConstants.ChopTime
     IEnumerator DoChopping(CuttingBoardBehaviour cuttingBoard)
     {
         yield return new WaitForSecondsRealtime(GameConstants.ChopTime);

@@ -19,6 +19,7 @@ public class PowerUpBehaviour : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        //render type text to display to players what the power up does
         text.text = type.ToString();
         switch (owningPlayer)
         {
@@ -36,6 +37,7 @@ public class PowerUpBehaviour : MonoBehaviour
         if (other.CompareTag("Player"))
         {
             PlayerBehaviour nearPlayer = other.gameObject.GetComponent<PlayerBehaviour>();
+            //make sure only the player this powerup is for can pick the powerup up
             if (nearPlayer.playerNumber == owningPlayer)
             {
                 DoApplyPowerUp(nearPlayer);

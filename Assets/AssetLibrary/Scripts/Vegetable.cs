@@ -21,15 +21,6 @@ public class Vegetable : ScoreObject
         isChopped = other.isChopped;
     }
 
-    public void DoChop()
-    {
-        if (!isChopped)
-        {
-            isChopped = true;
-            name = "Chopped " + name;
-        }
-    }
-
     public override bool Equals(object obj)
     {
         return obj is Vegetable vegetable && vegetable.name == name;
